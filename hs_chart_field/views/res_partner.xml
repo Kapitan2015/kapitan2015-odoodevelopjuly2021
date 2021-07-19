@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<record id="partner_chartfield_form_inherit" model="ir.ui.view">
+			<field name="name">res.partner.chartfield.form</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="hs_customer_class_code.res_partner_fund_inherit1"/>
+			<field name="arch" type="xml">
+				
+				<xpath expr="//page[@name='sales_purchases']" position="after">
+					<page name="page_charfield" string="ChartField" attrs="{'invisible':[('customer_type', '!=', 'fund')]}">
+						<h3>
+							<field name="stri_chartfield"/>
+						</h3>
+						<group>
+							<group>
+								<field name="stri_fund"/>
+								<field name="stri_budget"/>
+								<field name="stri_desig"/>
+								<field name="stri_dept"/>
+								<field name="stri_account"/>
+							</group>
+							<group>
+								<field name="stri_class"/>
+								<field name="stri_program"/>
+								<field name="stri_project"/>
+								<field name="stri_activity"/>
+								<field name="stri_type"/>
+							</group>
+						</group>
+					</page>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

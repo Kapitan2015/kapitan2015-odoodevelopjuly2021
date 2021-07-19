@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data noupdate="0">
+		<!-- Add you code here -->
+		
+		<!-- model.name inherit form view -->
+		<record id="account_invoice_classcode_inherit1" model="ir.ui.view">
+			<field name="name">account.invoice.classcode.inherit1</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form"/>
+			<field name="arch" type="xml">
+				<!-- Add your xpath here -->
+				<xpath expr="//field[@name='date_invoice']" position="replace">
+					<field name="date_invoice"/>
+				</xpath>
+				<xpath expr="//field[@name='partner_id']" position="after">
+					<!-- Add your fields here -->
+					<field name="customer_is_fund" invisible="1"/>
+					<field name="class_code" attrs="{'invisible':[('customer_is_fund','=',False)], 'required': [('customer_is_fund', '=', True)]}"/>
+					<field name="fund_email" attrs="{'invisible':[('customer_is_fund','=',False)]}"/>
+					<field name="pinv_email" attrs="{'invisible':['|',('customer_is_fund','=',False), ('pinv_email', '=', False)]}"/>
+					<!-- <field name="name" attrs="{'invisible': [('condition1', '=', False)], 'required': [('condition2', '=', True)]}"/> -->
+				</xpath>
+					
+				<xpath expr="//field[@name='partner_id']" position="attributes">
+					<attribute name="domain">['&amp;', ('customer', '=', True), ('only_pos', '!=', True)]</attribute>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

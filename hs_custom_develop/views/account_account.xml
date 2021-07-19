@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<record id="account_account_inherit_tree" model="ir.ui.view">
+			<field name="name">account.account.inherit.tree</field>
+			<field name="model">account.account</field>
+			<field name="inherit_id" ref="account.view_account_list"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='user_type_id']" position="after">
+					<field name="stri_budget"/>
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</odoo>

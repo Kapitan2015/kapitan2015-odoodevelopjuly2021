@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="search_template_analytic_inherited" inherit_id="account_reports.search_template_analytic">
+		<xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
+			<div t-if="options.get('analytic_group') != None" class="o_account_report_search" role="menuitem">
+                <b>Groups</b><br />
+                <select class="js_account_reports_analytic_group o_account_report_select" data-filter="analytic_group" multiple="multiple">
+                    <t t-foreach="analytic_group" t-as="a">
+                        <option t-att-value="a[0]"><t t-esc="a[1]" /></option>
+                    </t>
+                </select>
+            </div>
+		</xpath>
+	</template>
+</odoo>

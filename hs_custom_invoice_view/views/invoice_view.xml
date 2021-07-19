@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!--tree view-->
+        <record id = "invoice_meal_tree_view" model = "ir.ui.view">
+            <field name = "name">Invoice View Tree</field>
+            <field name = "model">account.invoice.line</field>
+            <field name = "arch" type = "xml">
+                <tree string = "BCI Meals Invoices View" create="false" edit="false" delete="false">
+                <!-- <tree string = "Invoice View"> -->
+                    <field name = "hs_number" />
+					<field name = "hs_date" />
+					<field name = "hs_partner_id" />
+					<field name = "hs_product_id" />
+                    <field name = "hs_item" />
+                    <field name = "quantity" />
+					<field name = "price_subtotal" string="Total" />
+					<field name = "hs_note" />
+                    <field name = "hs_state" />
+                </tree>
+            </field>
+        </record>
+
+        <!--FORM VIEW-->
+
+        <record id = "invoice_meal_view" model = "ir.ui.view">
+            <field name = "name">Invoice View Form</field> 
+            <field name = "model">account.invoice.line</field> 
+            <field name = "arch" type = "xml"> 
+                <form string = "BCI Meals Invoices View"> 
+                    <sheet> 
+                        <group>
+                            <group>
+                            	<field name = "hs_number" />
+                            </group>
+							<group>
+								<field name = "hs_date" />
+							</group>
+							<group>
+								<field name = "hs_partner_id" />
+							</group>
+							<group>
+								<field name = "hs_product_id" />
+							</group>
+                            <group>
+                                <field name = "quantity" />
+                            </group>
+							<group>
+								<field name = "price_subtotal" string="Total" />
+                            </group>
+							<group>
+                            	<field name = "hs_note" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--CREANDO VISTA DE BUSQUEDA PARA APLICAR FILTROS-->
+        
+        <record id="invoice_mealcard_search_view" model="ir.ui.view">
+            <field name="name">Invoice Search View</field>
+            <field name="model">account.invoice.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Invoice">
+                    <field name="hs_item"/>
+                    <!-- <field name="hs_state"/> -->
+                    <filter string="Meal Card" name="meal" domain="[('hs_item','=','meal')]"
+                            help="Invoices with items as Meal Card"/>
+                    <filter string="Visitor Program" name="visitor" domain="[('hs_item','=','visitor')]"
+                            help="Invoices with items as Visitor Program"/>
+                    <!-- <filter string="Open or Paid" name="draft" domain="[('hs_state','in', ['open','paid'])]"
+                            help="Invoices where state is different draft"/> -->
+                    <!-- <group expand="1" string="Group By">
+                        <filter string="Nationality" name="nationality" context="{'group_by':'nationality'}"/>
+                        <filter string="Blood Group" name="blood_group" context="{'group_by':'student_blood_group'}"/>
+                    </group> -->
+                </search>
+            </field>
+        </record>
+   
+
+        <record id="invoice_meal_menu_action" model="ir.actions.act_window">
+            <field name="name">BCI Meals Invoices View</field>
+            <field name="res_model">account.invoice.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="invoice_mealcard_search_view"/>
+        	<!-- <field name="context">{'search_default_draft': 1}</field>  -->
+            <!-- <field name="domain">[]</field> -->
+            <!-- <field name="domain">['|',('hs_item', '=', 'meal'),('hs_item', '=', 'visitor')]</field>  -->
+            <!-- <field name="domain">[('hs_item', 'in', ['meal', 'visitor'])]</field> -->
+            <field name="domain">['&amp;',('hs_item', 'in', ['meal', 'visitor']),('hs_state', 'in', ['open','paid']),('hs_type', '=', 'out_invoice')]</field>
+            <field name = "context"> {'search_default_type': 1, 'default_type': 'out_invoice'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">BCI Meal Invoice List</p>
+            </field>
+        </record>
+
+        <record id="invoice_meal_menu" model="ir.actions.act_window">
+            <field name="name">BCI Meals Invoices View</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.invoice.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+            <field name="search_view_id" ref="invoice_mealcard_search_view"/>
+            <!-- <field name="domain">[]</field> -->
+            <!-- <field name="context">{'search_default_draft': 1}</field>  -->
+            <!-- <field name="domain">[('hs_item', 'in', ['meal', 'visitor'])]</field> -->
+            <field name="domain">['&amp;',('hs_item', 'in', ['meal', 'visitor']),('hs_state', 'in', ['open','paid']),('hs_type', '=', 'out_invoice')]</field>
+            <field name = "context"> {'search_default_type': 1, 'default_type': 'out_invoice'}</field>
+        </record>
+       
+       <!-- Este es la acción heredada que permite mostrar los datos en vista arbol -->
+        <record id="invoice_meal_menu_tree" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="hs_custom_invoice_view.invoice_meal_menu" />
+            <field name="view_id" ref="hs_custom_invoice_view.invoice_meal_tree_view"/>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="invoice_mealcard_search_view"/>
+            <!-- <field name="domain">[]</field> -->
+            <!-- <field name="context">{'search_default_draft': 1}</field>  -->
+            <!-- <field name="domain">[('hs_item', 'in', ['meal', 'visitor'])]</field> -->
+            <field name="domain">['&amp;',('hs_item', 'in', ['meal', 'visitor']),('hs_state', 'in', ['open','paid']),('hs_type', '=', 'out_invoice')]</field>
+            <!-- <field name="context">{'type':'out_invoice'}</field> -->
+            <field name = "context"> {'search_default_type': 1, 'default_type': 'out_invoice'}</field>
+            <field name="sequence" eval="2"/>
+        </record>
+ 
+        <!-- Este es la accion heredada que permite mostrar los datos en vista formulario 
+        de facturas en invoice view -->
+        <record id="invoice_meal_menu_form" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="hs_custom_invoice_view.invoice_meal_menu"/>
+            <field name="view_id" ref="hs_custom_invoice_view.invoice_meal_view"/>
+            <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
+        </record>
+        
+		<!-- Esta seccion es para que las vista creadas aparezcan en el menu de reportes en el modulo de facturas-->
+        <menuitem id="invoice_meal_custom_menu" parent="account.account_reports_management_menu" name="BCI Meals Invoices Report" action="invoice_meal_menu"/>
+        
+    </data>
+        
+</odoo>

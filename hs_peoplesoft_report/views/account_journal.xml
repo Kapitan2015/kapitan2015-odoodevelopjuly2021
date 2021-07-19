@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+		
+		<!-- model.name inherit form view -->
+		<record id="peoplesoft_account_journal_filter" model="ir.ui.view">
+			<field name="name">peoplesoft.account.journal.filter</field>
+			<field name="model">account.journal</field>
+			<field name="inherit_id" ref="account.view_account_journal_form"/>
+			<field name="arch" type="xml">
+				<!-- Add your xpath here -->
+				<xpath expr="//field[@name='code']" position="after">
+					<!-- Add your fields here -->
+					<field name="people_soft"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

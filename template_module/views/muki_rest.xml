@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!--tree view-->
+		<record id = "vso_tree_view" model = "ir.ui.view">
+			<field name = "name">VSO View Tree</field>
+			<field name = "model">muki.rest</field>
+			<field name = "arch" type = "xml">
+				<tree string = "Search Visitor" create="false" edit="false" delete="true">
+					<field name = "hvisit2"/>
+					<field name = "nombre" />
+					<field name = "fname" />
+					<field name = "lname"/>
+					<field name = "visitor_email"/>
+					<field name = "hstatus"/>
+					<field name="hcateg"/>
+					<field name = "hstreet" invisible="1"/>
+					<field name = "hstreet2" invisible="1"/>
+					<field name = "hcity" invisible="1"/>
+					<field name = "hzip" invisible="1"/>
+					<field name="hcountry"/>
+				</tree>
+			</field>
+		</record>
+
+		<!--CREANDO VISTA DE BUSQUEDA PARA APLICAR FILTROS-->
+		
+		<record id="vso_search_view" model="ir.ui.view">
+			<field name="name">VSO Search View</field>
+			<field name="model">muki.rest</field>
+			<field name="arch" type="xml">
+				<search string="Search Visitor">
+						<field name="hvisit2" string="Visitor ID" filter_domain="[('hvisit2', '=', self)]"/>
+						<field name="nombre" string="Name" filter_domain="[('nombre', '=', self)]"/>
+						<field name="visitor_email" string="Email" filter_domain="[('visitor_email', '=', self)]"/>
+						<field name="hstatus" string="Status" filter_domain="[('hstatus', '=', self)]"/>
+						<field name="fname" string="First Name" filter_domain="[('fname', '=', self)]"/>
+						<field name="lname" string="Last Name" filter_domain="[('lname', '=', self)]"/>
+						<separator/>
+					
+				</search>
+			</field>
+		</record>
+
+		<record id="muki_rest_action" model="ir.actions.act_window">
+			<field name="name">VSO Search</field>
+			<field name="res_model">muki.rest</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="search_view_id" ref="vso_search_view"/>
+		</record>
+
+		<menuitem id="muki_rest_menu" name="VSO Search" parent="account.menu_finance_receivables" action="muki_rest_action" sequence=""/>
+		
+		<!-- DECLARACION DE WIZARD Y DE LA ACCION PARA LEVANTAR EL WIZARD AL HACR CLICK AL SEARCH -->
+		<record model="ir.ui.view" id="wizard_form_search">
+			<field name="name">wizard.form.search</field>
+			<field name="model">muki.rest</field>
+			<field name="arch" type="xml" >
+				<form string="VSO Search">
+					<sheet> 
+						<group>
+							<group>
+								<field name = "hvisit"/>
+								<field name = "whstatus" />
+								<field name = "wnombre" />
+								<field name = "wfname"/>
+								<field name = "wlname" />
+								<field name = "wvisitor_email" />
+							</group>
+						</group>
+						<footer>
+							<button name="search_visitor" type="object"
+									string="Search" class="oe_highlight"/>
+							or
+							<button special="cancel" string="Cancel"/>
+						</footer>
+					</sheet>
+				</form>    
+			</field>
+		</record>
+
+		<!-- DECLARACION DE WIZARD Y DE LA ACCION PARA LEVANTAR EL WIZARD AL HACR CLICK AL ACTION -->
+		<record model="ir.ui.view" id="wizard_form_view">
+			<field name="name">wizard.form</field>
+			<field name="model">create.customer</field>
+			<!-- <field name="groups_id" eval="[(4,ref('account.group_account_user'))]"/> -->
+			<field name="arch" type="xml">
+				<form string="CREATE CUSTOMER">
+					<group>
+						<div>
+							<h3> Are you sure to create this costumer? </h3>
+						</div>
+					</group>
+					<footer>
+						<button name="create_customer" type="object"
+								string="Create" class="oe_highlight"/>
+						or
+						<button special="cancel" string="Cancel"/>
+					</footer>
+				</form>    
+			</field>
+		</record>
+
+		<act_window id="launch_session_wizard"
+					name="Create Customer"
+					src_model="muki.rest"
+					res_model="create.customer"
+					view_mode="form"
+					target="new"
+					key2="client_action_multi"
+					groups="account.group_account_user"/>
+	
+		<!--  AGREGANDO WIZARD PARA CREAR EL POP-UP MESSAGE-->
+		<record id="message_wizard_form" model="ir.ui.view">
+			<field name="name">message.wizard.form</field>
+			<field name="model">message.wizard</field>
+			<field name="arch" type="xml">
+				<form string="SUCCESSFULL">
+					<group>
+						<div>
+							<h3>Customer successfully created!</h3>
+						</div>
+					</group>
+					<footer>
+						<button name="action_ok" string="Ok" type="object" default_focus="1" class="oe_highlight"/> 
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <templates id="pos_bag_charges_template" inherit_id="point_of_sale.template" xml:space="preserve">
+
+
+  
+  <!-- PosBagWidget -->
+   
+      <t t-name="POSAdvOrderNoteWidget" name="Pos Order Notes">
+        
+        <div class="control-button button confirm" id="pos_order_note">
+            <i class="fa fa-sticky-note"></i> Notes
+        </div>
+        
+   	 </t>
+
+
+
+        <!-- PosBagPopupWidget -->
+    <t t-name="PosOrderNotePopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-confirm" style="height: 400px;">
+                <p class="title" style="background-color: rgb(110,200,155); color: #fff;">Notes</p>
+
+                		<div class="body" style="height: 300px;">
+		     				<!--div class='div-container'>
+		                        <div class='product-list'>
+		                      
+		                		<input id ="enter_note" type="text" class="input-field" name="note" style="width:100%"></input>
+		                        <span class='product order-note' t-foreach="widget.options.notes || []" t-as="item" t-att-data-product-id="item.id">
+									
+									<div class="product-name1" t-att-data-product-id="item.id" t-att-data-product-name="item.order_note" t-att-id="item.id" id='ordernote'>
+										<t t-esc="item.order_note"/>
+										
+									</div>
+								</span>
+							
+		                        </div>
+		                        
+		                    </div-->
+		                    <div class="header" style="height: 70px;">
+                                <div class="note_category">
+                                    <div class="product_type button" t-att-data-id="10" style='margin: 0;
+                                        margin-right: 25px!important;
+                                        width: 35%;
+                                        border-radius: 7px;
+                                        font-size: 20px;
+                                        background: #0075AC;
+                                        color: #fff;
+                                        
+                                        border-color: #dcdcdc;'>Product Note</div>
+                                   <div class="order_type button" t-att-data-id="11" style='    margin: 0;
+                                    margin-right: 100px!important;
+                                    width: 35%;
+                                    border-radius: 7px;
+                                    font-size: 20px;
+                                    background: #0075AC;
+                                    color: #fff;
+                                    border-color: #dcdcdc;'>Order Note</div>
+                                </div>
+                            </div>
+		                    <div class="product_note1">
+                                    <div>
+                                    <input id ="enter_note" type="text" class="input-field" name="note" style="width:100%"></input>
+                                    </div>
+                                    <div>
+                                    <t t-if="widget.options.notes">
+                                        <t t-foreach="widget.options.notes" t-as="item">
+                                            <!--li-->
+                                                <t t-if="item.active">
+                                                    <div t-attf-data-id="{{item.id}}" t-attf-data-product-id="item.id" t-attf-id="item.id" t-attf-class="button active"><t t-esc="item.order_note"/></div>
+                                                </t>
+                                                <t t-if="!item.active">
+                                                    <div t-attf-data-id="{{item.id}}" t-attf-data-product-id="item.id" t-attf-id="item.id" t-attf-class="button"><t t-esc="item.order_note"/></div>
+                                                </t>
+
+                                            <!--/li-->
+                                        </t>
+                                    </t>
+                                    </div>
+                            </div>
+		                 </div>
+
+                <div class="footer" style="background-color: rgb(110,200,155); color: #fff;">
+                	<div class="button confirm-note" style="background-color: #0075AC; color: #fff;">
+                        Apply
+                    </div>
+                	<div class="button cancel" style="background-color: #0075AC; color: #fff;">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+    <t t-name="Orderline">
+        <li t-attf-class="orderline #{ line.selected ? 'selected' : '' }">
+            <span class="product-name">
+                <t t-esc="line.get_product().display_name"/>
+            </span>
+            
+            <br/><span class="product-name">
+                   <i>  Note : <t t-esc="line.get_to_stay()" /> </i>
+            </span>
+            
+            <span class="price">
+                <t t-esc="widget.format_currency(line.get_display_price())"/>
+            </span>
+            <ul class="info-list">
+                <t t-if="line.get_quantity_str() !== '1' || line.selected ">
+                    <li class="info">
+                        <em>
+                            <t t-esc="line.get_quantity_str()" />
+                        </em>
+                        <t t-esc="line.get_unit().name" />
+                        at
+                        <t t-esc="widget.format_currency(line.get_unit_display_price(),'Product Price')" />
+                        /
+                        <t t-esc="line.get_unit().name" />
+                    </li>
+                </t>
+                <t t-if="line.get_discount_str() !== '0'">
+                    <li class="info">
+                        With a 
+                        <em>
+                            <t t-esc="line.get_discount_str()" />%
+                        </em>
+                        discount
+                    </li>
+                </t>
+            </ul>
+        </li>
+    </t>
+    
+    <t t-extend="PosTicket" >
+        <t t-jquery="table[class*='receipt-orderlines']" t-operation="replace">
+            <table class='receipt-orderlines'>
+                    <colgroup>
+                        <col width='50%' />
+                        <col width='25%' />
+                        <col width='25%' />
+                    </colgroup>
+                    <tr t-foreach="orderlines" t-as="orderline">
+                        <td>
+                            <t t-esc="orderline.get_product().display_name"/>
+                             <t t-if="orderline.get_discount() > 0">
+                                <div class="pos-disc-font">
+                                    With a <t t-esc="orderline.get_discount()"/>% discount
+                                </div>
+                            </t>
+                            <br/>
+                            
+                            <t t-if="orderline.get_to_stay()">
+                                   <i> Note : <t t-esc="orderline.get_to_stay()" /> </i> 
+                            </t>
+             
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                        </td>
+                    </tr>
+            </table>
+        
+        </t>
+        <t t-jquery="table[class*='receipt-orderlines']" t-operation="after">
+            <t t-if= 'order.get_to_stay()'>
+                <table>
+                    <tr><td>Notes:</td><td class="pos-right-align">
+                        <t t-esc="order.get_to_stay()"/>
+                        </td></tr>
+                </table>
+            </t>
+        </t>
+    </t>
+    
+    <!--t t-extend="OrderWidget">
+        <t t-jquery='div[class="line"]' t-operation="after">
+            <div class="order-notes" style="float:left">
+                <div class='entry'>
+                    <span class="label">Note:</span>
+                    <t t-esc="get_to_stay"/>
+                </div>
+            </div>
+        </t>
+    </t-->
+    
+    <!-- Total Items in OrderWidget -->
+		<t t-extend="OrderWidget">
+		    
+		    <t t-jquery=".summary" t-operation="after">
+                <div class='items' style="padding-bottom: 10px; padding-left: 15px;padding-right: 15px;"><i><b style="font-weight: bold; font-size: 20px;">Notes: <span class="value"></span></b></i></div>
+		    </t>
+
+		</t>
+
+ 
+    
+  	</templates>
+  	
+  	

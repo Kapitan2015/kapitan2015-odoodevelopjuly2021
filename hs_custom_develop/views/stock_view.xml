@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+
+		<!-- model.name inherit form view -->
+		<record id="stri_custom_stock_view" model="ir.ui.view">
+			<field name="name">stri.custom.stock.view</field>
+			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
+			<field name="arch" type="xml">
+				<!--button name="button_validate" attrs="{'invisible': ['|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False)]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user"/>
+				<button name="button_validate" attrs="{'invisible': ['|', ('state', 'not in', ('waiting', 'confirmed')), ('show_validate', '=', False)]}" string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate"/-->
+				<xpath expr="//field[@name='id']" position="after">
+					<field name="enable_button_validate" invisible="1"/>
+				</xpath>
+				<xpath expr="//button[@name='button_validate'][1]" position="attributes">
+					<attribute name="attrs">{'invisible': ['|', '|', ('enable_button_validate', '=', False), ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False)]}</attribute>
+				</xpath>
+				<xpath expr="//button[@name='button_validate'][2]" position="attributes">
+					<attribute name="attrs">{'invisible': ['|', '|', ('enable_button_validate', '=', False), ('state', 'not in', ('waiting', 'confirmed')), ('show_validate', '=', False)]}</attribute>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

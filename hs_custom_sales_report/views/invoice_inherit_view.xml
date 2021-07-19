@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+
+		<!-- model.name inherit tree view -->
+		<record id="invoice_tree_inherit2" model="ir.ui.view">
+			<field name="name">invoice.tree.inherit2</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='origin']" position="after">
+    				<field name="hs_journal"/>
+ 				</xpath>
+				
+			</field>
+		</record>
+
+		<!-- model.name inherit tree view -->
+		<record id="payment_inherit_view_tree" model="ir.ui.view">
+			<field name="name">payment.inherit.view.tree</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id" ref="account.view_account_payment_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='payment_date']" position="replace">
+    				<field name="payment_date" string="Date"/>
+  				</xpath>
+				<xpath expr="//field[@name='name']" position="replace">
+    				<field name="name" string="Number"/>
+  				</xpath>
+				<xpath expr="//field[@name='amount']" position="replace">
+    				<field name="amount" string="Amount"/>
+  				</xpath>
+				<xpath expr="//field[@name='payment_method_id']" position="replace">
+    				<field name="payment_method_id" invisible="1"/>
+  				</xpath>
+
+				<xpath expr="//field[@name='journal_id']" position="after">
+    				<field name="diario"/>
+  				</xpath>
+				
+			</field>
+		</record>
+		<!-- FILTROS PARA LA VISTA DE PAGOS  -->
+		<record id="view_account_payment_filter" model="ir.ui.view">
+			<field name="model">account.payment</field>
+			<field name="inherit_id" ref="account.view_account_payment_search"/>
+			<field name="arch" type="xml">
+				<!-- FILTROS -->
+				<xpath expr="//search/separator" position="after">
+					<filter string="BCI"
+							name="payment_bci"
+							domain="[('diario','=','BCI 1312')]"/>
+					
+					<filter string="Administration"
+							name="payment_stri"
+							domain="[('diario','=','Administration 1380')]"/>
+					
+					<filter string="STRIFund"
+							name="payment_fund"
+							domain="[('journal_id','=','Strifund')]"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

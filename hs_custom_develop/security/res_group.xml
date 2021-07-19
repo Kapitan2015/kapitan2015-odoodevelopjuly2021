@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<record id="group_purchase_advanced_users" model="res.groups">
+			<field name="name">Advanced users</field>
+			<field name="category_id" ref="base.module_category_purchase_management"/>
+			<field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+		</record>
+		
+
+	</data>
+</odoo>

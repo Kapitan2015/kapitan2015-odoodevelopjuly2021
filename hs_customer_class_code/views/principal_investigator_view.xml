@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="principal_menu_action" model="ir.actions.act_window">
+            <field name="name">Principal Investigator</field>
+            <field name="res_model">principal.investigator</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create a Principal Investigator </p>
+            </field>
+        </record>
+
+        <!--tree view-->
+        <record id = "principal_tree_view" model = "ir.ui.view">
+            <field name = "name"> Principal Investigator Tree</field>
+            <field name = "model">principal.investigator</field>
+            <field name = "arch" type = "xml">
+                <tree string = "Principal Investigator">
+                    <field name = "name" />
+                    <field name = "email" />
+                </tree>
+            </field>
+        </record>
+
+        <!--FORM VIEW-->
+
+        <record id = "principal_investigator_view" model = "ir.ui.view">
+            <field name = "name">Principal Investigator Form</field>
+            <field name = "model">principal.investigator</field>
+            <field name = "arch" type = "xml">
+                <form string = "Principal Investigator">
+                    <sheet>
+                    <!-- <field name = "photo" widget = "image" class = "oe_left oe_avatar" /> -->                   
+                        <group>
+                            <group>
+                             <field name = "name" />
+                            </group>
+                            <group>
+                                <field name = "email" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+        <record id="principal_investigator_action" model="ir.actions.act_window">
+            <field name="name">Principal Investigator</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">principal.investigator</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+           
+        </record> 
+       
+        <!-- <menuitem id="class_code_menu"
+            name="Class Code" /> -->
+
+        <menuitem id="principal_investigator_menu" parent="account.account_management_menu" name="Principal Investigator" action="principal_investigator_action"/>
+       
+    </data>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+		
+		<!-- model.name inherit form view -->
+		<record id="product_template_item_inherit2" model="ir.ui.view">
+			<field name="name">product.template.item.inherit2</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_only_form_view"/>
+			<field name="arch" type="xml">
+
+
+				<xpath expr="//field[@name='list_price']" position="before">
+					<field name="item_type" 
+						widget="selection" 
+						context="{'default_item_type': ' '}"/>
+				</xpath>
+			</field>
+		</record>
+
+        <record id="product_type_inherit1" model="ir.ui.view">
+			<field name="name">product.type.inherit1</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='lst_price']" position="before">
+					<field name="item_type" 
+						widget="selection" 
+						context="{'default_item_type': ' '}"/>
+				</xpath>        
+			</field>
+		</record>
+	</data>
+</odoo>

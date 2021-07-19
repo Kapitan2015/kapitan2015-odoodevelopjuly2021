@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+		<!-- model.name inherit form view -->
+		<record id="sale_view_inherit1" model="ir.ui.view">
+			<field name="name">sale.view.inherit1.form</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+				<!-- Add your xpath here -->
+				<xpath expr="//field[@name='partner_id']" position="attributes">
+					<attribute name="domain">['&amp;', ('customer', '=', True), ('only_pos', '!=', True)]</attribute>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

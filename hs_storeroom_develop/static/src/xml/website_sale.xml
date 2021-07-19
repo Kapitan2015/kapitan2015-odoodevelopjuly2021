@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+	<t t-name="ShowPartnerFund">
+		<div>
+			<table>
+				<t t-foreach="lines" t-as="line">
+					<tr>
+						<td><input type="radio" name="" id=""/></td>
+						<td><t t-esc="line.name"/></td>
+					</tr>
+				</t>
+			</table>
+		</div>
+	</t>
+
+</templates>

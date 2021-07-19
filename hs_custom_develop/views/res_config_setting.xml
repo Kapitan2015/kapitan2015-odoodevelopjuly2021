@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<record id="res_config_settings_inherit_view_form" model="ir.ui.view">
+			<field name="name">res.config.settings.inherit.view.form</field>
+			<field name="model">res.config.settings</field>
+			<field name="inherit_id" ref="account.res_config_settings_view_form"/>
+			<field name="arch" type="xml">
+				
+				<xpath expr="//div[@id='account_followup']" position="before">
+					<div class="col-12 col-lg-6 o_setting_box">
+						<div class="o_setting_right_pane">
+							<div>
+								<label string="Default Strifund Journal" for="journal_strifund"/>
+								<div class="text-muted">
+									Select default strifund journal
+								</div>
+								<div class="content-group mt16">
+									<field name="journal_strifund" colspan="4" nolabel="1" domain="[('type', '=', 'bank')]"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</xpath>
+				
+			</field>
+		</record>
+		
+	</data>
+</odoo>

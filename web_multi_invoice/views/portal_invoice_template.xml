@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <template id="assets_frontend_pay" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/web_multi_invoice/static/src/css/invoice.css"/>
+                <script type="text/javascript"
+                        src="/web_multi_invoice/static/src/js/portal_pay.js"></script>
+            </xpath>
+
+        </template>
+
+        <template id="multi_invoice_payment" name="My Invoices and Payments">
+            <t t-call="website.layout">
+                <div class="container">
+                    <br/><br/><br/>
+                    <div class="row invoice_web">
+                        <div class="row col-md-12 invoice_reference_web">
+                            <span style="font-weight: bold;padding-right: 10px;">Reference:</span>
+                            <t t-esc="reference"></t>
+                        </div>
+                        <div class="row col-md-12 invoice_amount_web">
+                            <span style="font-weight: bold;padding-right: 10px;">Amount:</span>
+                            <t t-esc="amount" t-options='{"widget": "float", "precision": 2}'/>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <div t-if="pms or acquirers" id="payment_method" class="text-left">
+                        <h3 class="mb24">Pay with</h3>
+                        <t t-call="payment.payment_tokens_list">
+                            <t t-set="mode" t-value="'payment'"/>
+                            <t t-set="partner_id" t-value="request.env.user.partner_id.id"/>
+                            <t t-set="success_url" t-value="'/invoice/success/' +str(invoice) "/>
+                            <t t-set="error_url" t-value="'/invoice/error'"/>
+                            <t t-set="access_token" t-value="access_token or ''"/>
+                            <t t-set="callback_method" t-value="''"/>
+                            <t t-set="form_action" t-value="'/invoice/pay/' + str(invoice) + '/s2s_token_tx/'"/>
+                            <t t-set="prepare_tx_url" t-value="'/multi/invoice/pay/' + str(invoice) + '/form_tx/'"/>
+                            <t t-set="submit_txt">Pay Now</t>
+                            <t t-set="icon_class" t-value="'fa-lock'"/>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <template id="portal_pay_multiple_invoice" name="My Invoices and Payments"
+                  inherit_id="account.portal_my_invoices">
+            <xpath expr="//thead//tr//th" position="before">
+                <th>
+                    <form action="/invoice/multi/payment">
+
+                        <button type="submit" id="pay_multi_portal_id" class="btn btn-primary btn-block mb-2 pay_multi_portal" style="display:none">
+                            <i class="fa fa-fw fa-arrow-circle-right" ></i>
+                            Pay Now
+                        </button>
+                        <input type="hidden" name="multi_invoice_data" id="multi_invoices"/>
+                    </form>
+
+                </th>
+            </xpath>
+            <xpath expr="//tbody//tr//td" position="before">
+                <td>
+                    <!--t t-if="invoice.state == 'open' and invoice.amount_total and invoice.type == 'out_invoice' and (pending_manual_txs or not tx_ids)"-->
+					<t t-if="invoice.state == 'open' and invoice.type == 'out_invoice'">
+                        <input type="checkbox" class="select_invoice_cls" id="select_invoice" name="portal_invoice" t-att-value="invoice.id"/>
+                    </t>
+                </td>
+            </xpath>
+        </template>
+
+        <template id="multi_invoice_payment_success">
+            <t t-call="website.layout">
+                <t t-set="additional_title">Invoice - Paid</t>
+                <div id="wrap">
+                    <div class="container oe_website_sale py-2">
+                        <div class="row">
+                            <div class="col-12 col-xl">
+                                <div class="oe_cart">
+                                    <div class="oe_structure clearfix mt-3" id="oe_structure_website_sale_confirmation_1"/>
+                                    <h3 class="text-left mt-3">
+                                        <strong>Payment Information:</strong>
+                                    </h3>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Number</th>
+                                                <th>Amount</th>
+                                                <th>State</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="success_invoice" t-as="invoice">
+                                                <tr>
+                                                    <td>
+                                                        <t t-esc="invoice.get('number')"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="invoice.get('amount')"/>
+                                                    </td>
+                                                    <td>
+                                                         <t t-esc="invoice.get('state')"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="oe_structure" id="oe_structure_website_sale_confirmation_3"/>
+                </div>
+            </t>
+        </template>
+        <template id="multi_invoice_payment_error" name="My Invoices and Payments">
+            <t t-call="website.layout">
+                <div class="container">
+                     <span>Something wrong !!!</span>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

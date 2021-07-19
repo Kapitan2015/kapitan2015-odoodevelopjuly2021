@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_muki_rest_group_manager,muki.rest.group.manager,model_muki_rest,account.group_account_user,1,1,1,1
+access_muki_rest_group_user,muki.rest.group.user,model_muki_rest,account.group_account_invoice,1,1,1,0
+access_muki_rest_group_advance_user,muki.rest.group.advance,model_muki_rest,account.group_account_advance_user,1,1,1,0
+access_create_customer_group_manager,create.customer.group.manager,model_create_customer,account.group_account_user,1,1,1,0

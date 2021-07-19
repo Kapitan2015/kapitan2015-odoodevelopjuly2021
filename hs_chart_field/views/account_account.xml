@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+		
+		<!-- model.name inherit form view -->
+		<record id="account_chartfield_form_inherit" model="ir.ui.view">
+			<field name="name">account.account.chartfield.form</field>
+			<field name="model">account.account</field>
+			<field name="inherit_id" ref="account.view_account_form"/>
+			<field name="arch" type="xml">
+			
+				<xpath expr="//field[@name='user_type_id']" position="attributes">
+					<attribute name="string">Account Type</attribute>
+				</xpath>
+
+				<xpath expr="//sheet/group" position="after">
+					<notebook>
+						<page name="page_chartfield" string="ChartField">
+							<h3>
+								<field name="stri_chartfield"/>
+							</h3>
+							<group>
+								<group>
+									<field name="stri_fund"/>
+									<field name="stri_budget"/>
+									<field name="stri_desig"/>
+									<field name="stri_dept"/>
+									<field name="stri_account"/>
+								</group>
+								<group>
+									<field name="stri_class"/>
+									<field name="stri_program"/>
+									<field name="stri_project"/>
+									<field name="stri_activity"/>
+									<field name="stri_type"/>
+								</group>
+							</group>
+						</page>
+					</notebook>
+				</xpath>
+			</field>
+		</record>
+
+	</data>
+</odoo>

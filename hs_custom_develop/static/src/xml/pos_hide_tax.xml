@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<templates id="pos_custom_template" inherit_id="point_of_sale.template"  xml:space="preserve">
+
+	<t t-extend="ClientDetails">
+		<t t-jquery=".client-details-right .client-detail:nth-child(2)" t-operation="replace"> </t>
+	</t>
+
+	<t t-extend="ClientDetailsEdit">
+		<t t-jquery=".client-details-right .client-detail:nth-child(4)" t-operation="replace"> </t>
+	</t>
+
+</templates>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<template id="search_template_people_soft_category">
+			<a type="button" class="dropdown-toggle" data-toggle="dropdown">
+				<span class="fa fa-user"/>
+				Category:
+				<t t-set="selected_category" t-value="', '.join(category.get('name') for category in options['category'] if category.get('selected'))"/>
+				<t t-if="selected_category">
+					<t t-esc="selected_category"/>
+				</t>
+				<t t-else="">All</t>
+			</a>
+			<div class="dropdown-menu o_filters_menu" role="menu">
+				<t t-foreach="options['category']" t-as="a">
+					<a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="a.get('name')" t-att-data-id="a.get('id')" data-filter="category">
+						<t t-esc="a.get('name')"/>
+					</a>
+				</t>
+			</div>
+		</template>
+
+
+		<template id="published_entries_filter_options" inherit_id="account_reports.search_template_extra_options">
+			<xpath expr="//a[hasclass('dropdown-toggle')]/t[2]" position="after">
+				<t t-if="options.get('published_entries') != None" groups="account.group_account_user">
+					<t t-if="options.get('all_entries') != None">,</t>
+					<t t-if="options['published_entries']">With Published</t>
+					<t t-if="not options['published_entries']">News Entries</t>
+				</t>
+			</xpath>
+			<xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
+				<a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('published_entries') != None" title="include published entries" data-filter="published_entries">Include Published Entries</a>
+			</xpath>
+		</template>
+		
+
+		<template id="search_template_inherit" inherit_id="account_reports.search_template">
+			<xpath expr="//div[1]" position="after">
+				<div class="btn-group o_dropdown o_account_reports_filter_category" t-if="options.get('category') != None">
+					<t t-call="hs_peoplesoft_report.search_template_people_soft_category"/>
+				</div>
+			</xpath>
+		</template>
+	</data>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+
+		<!-- model.name form view -->
+		<record id="regular_companies_form" model="ir.ui.view">
+			<field name="name">regular.companies.form</field>
+			<field name="model">regular.companies</field>
+			<field name="arch" type="xml">
+				<form string="">
+					<sheet>
+						<group>
+							<!-- Add your fields here -->
+							<group>
+								<field name="name" string="Company"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+
+		<!-- model.name tree view -->
+		<record id="regular_companies_tree" model="ir.ui.view">
+			<field name="name">regular.companies.tree</field>
+			<field name="model">regular.companies</field>
+			<field name="arch" type="xml">
+				<tree>
+					<!-- Add your fields here -->
+					<field name="name" string="Company"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<!--record id="action_regular_companies" model="ir.actions.act_window">
+			<field name="name">Regular Customer Companies</field>
+			<field name="res_model">regular.companies</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="regular_companies_tree"/>
+		</record> 
+
+
+		<menuitem id="menu_act_regular_companies" 
+				  name="Regular Customer Companies" 
+				  parent="account.account_management_menu" 
+				  action="action_regular_companies"sequence="10"/-->
+
+		<record id="action_regular_companies" model="ir.actions.act_window">
+            <field name="name">Regular Customer Companies</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">regular.companies</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+           
+        </record> 
+       
+        <menuitem id="menu_act_regular_companies" parent="account.account_management_menu" name="Regular Customer Companies" action="action_regular_companies"/>
+	</data>
+</odoo>

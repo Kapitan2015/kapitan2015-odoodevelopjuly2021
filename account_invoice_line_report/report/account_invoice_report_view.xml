@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2017 Carlos Dauden - Tecnativa <carlos.dauden@tecnativa.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="view_invoice_report_tree_info" model="ir.ui.view">
+        <field name="name">account.invoice.report.tree.info</field>
+        <field name="model">account.invoice.report</field>
+        <field name="arch" type="xml">
+            <tree string="Invoice Line" create="false" edit="false" delete="false">
+                <field name="account_line_id" string="Department"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="user_id"/>
+                <field name="categ_id" string="Category"/>
+                <field name="product_id" string="Item"/>
+                <field name="product_qty" string="Qty Sold"/>
+                <field name="price_average" string="Sold Price"/>
+                <field name="price_total" string="Total Sales"/>
+                <field name="number"/>
+                <field name="date"/>
+                <field name="chartfield" string="Fund"/>
+                <!-- <field name="test" invisible="1"/> -->
+                <field name="currency_id" invisible="1"/>
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_report_search" model="ir.ui.view">
+        <field name="model">account.invoice.report</field>
+        <field name="inherit_id" ref="account.view_account_invoice_report_search"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//search/field[@name='categ_id']" position="before">
+                <field name="chartfield" string="Chartfield"/>
+            </xpath> -->
+            <!--FILTROS DE BUSQUEDA POR CAMPOS DE CHARTFIELD-->
+            <field name="date" position="before">
+                <!-- <field name="uom_name" string="Partner Tags" filter_domain="[('partner_id.commercial_partner_id.category_id', '=', self)]"/> -->
+                <field name="chartfield" string="Fund Code" filter_domain="[('product_id.property_account_income_id.stri_fund', '=', self)]"/>
+                <field name="chartfield" string="Budget Reference" filter_domain="[('product_id.property_account_income_id.stri_budget', '=', self)]"/>
+                <field name="chartfield" string="Designated Code" filter_domain="[('product_id.property_account_income_id.stri_desig', '=', self)]"/>
+                <field name="chartfield" string="Department ID" filter_domain="[('product_id.property_account_income_id.stri_dept', '=', self)]"/>
+                <field name="chartfield" string="Account" filter_domain="[('product_id.property_account_income_id.stri_account', '=', self)]"/>
+                <field name="chartfield" string="Class Field" filter_domain="[('product_id.property_account_income_id.stri_class', '=', self)]"/>
+                <field name="chartfield" string="Program Code" filter_domain="[('product_id.property_account_income_id.stri_program', '=', self)]"/>
+                <field name="chartfield" string="Project ID" filter_domain="[('product_id.property_account_income_id.stri_project', '=', self)]"/>
+                <field name="chartfield" string="Activity Code" filter_domain="[('product_id.property_account_income_id.stri_activity', '=', self)]"/>
+                <field name="chartfield" string="Type" filter_domain="[('product_id.property_account_income_id.stri_type', '=', self)]"/>
+                <separator/>
+            </field>
+            <!-- <xpath expr="/search/field[@name='categ_id']" position="before">
+                
+               <field name="chartfield" string="Chartfield" domain="[('chartfield','=','stri_fund')]"/>
+                  <field name="stri_fund"/> #how to add that search
+                 
+            </xpath> -->
+        </field>
+    </record>
+
+    <record id="action_account_invoice_line_report" model="ir.actions.act_window">
+        <field name="name">Sales Invoice Report</field>
+        <field name="res_model">account.invoice.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,pivot,graph</field>
+        <field name="search_view_id" ref="view_account_invoice_report_search"/>
+        <field name="domain">['&amp;',('type', '=', 'out_invoice'),('state', 'in', ['open','paid'])]</field>
+        <field name="help">From this report, you can have an overview of the amount invoiced to your customers. The search tool can also be used to personalise your Invoices reports and so, match this analysis to your needs.</field>
+    </record>
+
+    <menuitem action="action_account_invoice_line_report" id="menu_action_account_invoice_line_report" parent="account.account_reports_management_menu" sequence="25"/>
+
+</odoo>

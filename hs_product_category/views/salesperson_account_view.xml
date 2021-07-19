@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<!-- Este es la vista de formulario para mostrar los datos de salesperon -->
+		<record id="user_department_form" model="ir.ui.view">
+			<field name="name">Users</field>
+			<field name="model">res.users</field>
+			<field name="arch" type="xml">
+				<form string="Users" create="false"  delete="false">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" readonly="1"/>
+								<field name="login" readonly="1"/>
+							</group>
+							<group>
+								<field name="departments_ids" 
+									nolabel="1"
+									options="{'no_create':True, 'no_create_edit':True}"
+									widget="many2many"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+
+		<!-- Este es la vista de arbol para mostrar los datos de salesperson -->
+		<record id="user_department_tree" model="ir.ui.view">
+			<field name="name">user.department.tree</field>
+			<field name="model">res.users</field>
+			<field name="arch" type="xml">
+				<tree create="false" edit="false" delete="false">
+					<field name="name"/>
+					<field name="login"/>
+					<field name="departments_count" string="Departments"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<!-- Este es la acción base utilizada por las demas acciones para mostrar
+		los datos en tipo vista/arbol de salesperson dentro de account -->
+		<record id="action_account_salesperson" model="ir.actions.act_window">
+			<field name="name">Salesperson</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">res.users</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+		<!-- Este es la acción heredada que permite mostrar los datos en vista arbol de 
+		salesperson en account -->
+		<record id="action_account_salesperson_tree" model="ir.actions.act_window.view">
+			<field name="act_window_id" ref="hs_product_category.action_account_salesperson" />
+			<field name="view_id" ref="hs_product_category.user_department_tree"/>
+			<field name="view_mode">tree</field>
+			<field name="sequence" eval="2"/>
+		</record>
+
+
+		<!-- Este es la accion heredada que permite mostrar los datos en vista formulario 
+		de salesperson en account -->
+		<record id="action_account_salesperson_form" model="ir.actions.act_window.view">
+			<field name="act_window_id" ref="hs_product_category.action_account_salesperson"/>
+			<field name="view_id" ref="hs_product_category.user_department_form"/>
+			<field name="view_mode">form</field>
+			<field name="sequence" eval="2"/>
+		</record>
+
+
+		<!-- Este es el menu que aparecera en el menu de configuraciones -->
+		<menuitem id="menu_act_account_salesperson" 
+				  name="Salesperson" 
+				  parent="account.account_management_menu" 
+				  action="hs_product_category.action_account_salesperson"
+				  groups="account.group_account_manager"
+				  sequence="10"/>
+	</data>
+</odoo>

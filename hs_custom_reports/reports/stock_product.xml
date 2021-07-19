@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<template id="stock_product_template">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="web.external_layout">
+						<div class="page">
+							<br/>
+							<h2>Products List</h2>
+
+							<table class="table table-sm table-bordered">
+								<thead>
+									<tr>
+										<th><strong>Inventory</strong></th>
+										<th t-if="o.location_id != False"><strong>Inventoried Location</strong></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<span t-field="o.name"/>
+										</td>
+										<td t-if="o.location_id != False">
+											<span t-field="o.location_id"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<br/>
+
+							<table class="table table-sm table-bordered">
+								<thead>
+									<tr>
+										<!--th groups="stock.group_stock_multi_locations"><strong>Location</strong></th-->
+										<th><strong>Product</strong></th>
+										<th><strong>Code</strong></th>
+										<!--th groups="stock.group_production_lot"><strong>Production Lot</strong></th>
+										<th groups="stock.group_tracking_lot"><strong>Package</strong></th-->
+										<th class="text-right"><strong>Quantity</strong></th>
+									</tr>
+								</thead>
+								<tbody>
+									<!--t t-foreach="locations" t-as="location">
+										<tr groups="stock.group_stock_multi_locations">
+											<td colspan="2"><strong t-esc="location.display_name"/></td>
+											<td groups="stock.group_production_lot"/>
+											<td groups="stock.group_tracking_lot"/>
+											<td/>
+										</tr>
+										<tr t-foreach="o.line_ids.filtered(lambda line: line.location_id.id == location.id)" t-as="line">
+											<td groups="stock.group_stock_multi_locations"/>
+											<td><span t-field="line.product_id"/></td>
+											<td groups="stock.group_production_lot"><span t-field="line.prod_lot_id"/></td>
+											<td groups="stock.group_tracking_lot"><span t-field="line.package_id"/></td>
+											<td class="text-right"><span t-field="line.product_qty"/> <span t-field="line.product_uom_id" groups="uom.group_uom"/></td>
+										</tr>
+									</t-->
+									<t t-foreach="lines" t-as="column">
+										<tr>
+											<td><span t-esc="column['name']"/></td>
+											<td><span t-esc="column['code']"/></td>
+											<td><span t-esc="column['quantity']"/></td>
+										</tr>
+									</t>
+								</tbody>
+							</table>
+
+
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+
+
+		<report
+			id="stock_product_report_action"
+			model="stock.inventory"
+			string="General Products"
+			report_type="qweb-pdf"
+			name="hs_custom_reports.stock_product_template"
+			file="hs_custom_reports.stock_product_template"
+			print_report_name="'stock_product'"
+		/>
+	</data>
+</odoo>

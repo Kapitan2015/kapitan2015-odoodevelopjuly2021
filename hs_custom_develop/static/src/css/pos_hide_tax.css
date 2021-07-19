@@ -1,0 +1,10 @@
+/*.edit .client-details-right .client-detail:nth-child(4),
+.edit .client-details-right .client-detail:nth-child(4){
+	display: none !important;
+}
+*/
+
+
+.entry .subentry{
+	visibility: hidden !important;
+}

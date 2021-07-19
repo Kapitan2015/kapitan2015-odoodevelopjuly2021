@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+		<record id="sale_excel_view" model="ir.ui.view">
+			<field name="name">wizard.reports</field>
+			<field name="model">wizard.reports</field>
+			<field name="arch" type="xml">
+				<form string="Export Sales Invoices Report">
+				<!-- <group>
+					<group>
+						<field name="date_from"/>
+					</group>
+					<group>
+						<field name="date_to"/>
+					</group>
+				</group> -->
+				<p class="oe_grey">
+				You want to Print Sales Invoice Excel Report?
+				</p>			  
+					<footer>
+						<button string="Print Excel Report" class="btn-primary" name="action_sale_report" type="object" />
+						<button string="Cancel" class="btn-primary" special="cancel"/>
+					</footer>
+				</form>						
+			</field>
+		</record>
+
+
+	<record id="sale_excel_views" model="ir.ui.view">
+		<field name="name">sales.invoice.report</field>
+		<field name="model">sales.invoice.report</field>
+		<field name="arch" type="xml">
+			<form string="Export Sales Invoices Report">
+				<group>
+					<field name="file_name" filename="sale_data" />
+					<field name="sale_data" invisible="1" />
+					<!-- <field name="file_names" filename="purchase_work" />
+					<field name="purchase_work" invisible="1" /> -->
+				</group>
+				<footer>
+					<button string="Cancel" class="btn-primary" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>	
+		
+
+		<act_window id="action_sale_excel" key2="client_action_multi"
+			name="Sale Invoice Excel Report " res_model="wizard.reports" src_model="account.invoice.report"
+			view_mode="form" target="new" />
+
+</odoo>

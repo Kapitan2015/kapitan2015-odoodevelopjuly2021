@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		<!-- Add you code here -->
+		
+		<!-- model.name inherit form view -->
+		<record id="res_partner_fund_inherit1" model="ir.ui.view">
+			<field name="name">res.partner.fund.inherit1</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
+			<field name="arch" type="xml">
+
+
+				<xpath expr="//field[@name='commercial_partner_id']" position="after">
+					<field name="customer_type" 
+						widget="radio" 
+						class="oe_edit_only" 
+						options="{'horizontal': true}" 
+						context="{'default_company_type': 'person'}" attrs="{'invisible':[('supplier', '=', True)]}"/>
+				</xpath>
+
+
+				<xpath expr="//field[@name='company_type']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+
+
+				<xpath expr="//field[@name='parent_id']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+
+				
+				<xpath expr="//field[@name='type']" position="after">
+					<!-- Add your fields here -->
+
+					<field name="fund_manager" attrs="{'invisible':[('customer_type', '!=', 'fund')], 'required': [('customer_type', '=', 'fund')]}"/>
+					<field name="principal_investigator" attrs="{'invisible':[('customer_type', '!=', 'fund')], 'required': [('customer_type', '=', 'fund')]}"/>
+
+					<field name="regular_companies_id" attrs="{'invisible':[('customer_type', '!=', 'regular')]}"/>
+				</xpath>
+				
+				<xpath expr="//field[@name='vat']" position="before">
+					<field name="visitor" readonly="1" attrs="{'invisible':[('visitor','=',False)]}"/>
+				</xpath>
+
+				<!-- <xpath expr="//field[@name='regular_companies_id']" position="before">
+					<field name="visitor_name" invisible = "1"/>
+				</xpath> -->
+
+			</field>
+		</record>
+
+		<!-- CODIGO PARA AGREGARLES LOS FILTROS DE BUSQUEDA PARA REGULAR Y FUND -->
+		<!-- model.name inherit search view -->
+		<record id="view_res_partner_search" model="ir.ui.view">
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_res_partner_filter"/>
+			<field name="arch" type="xml">
+				<xpath expr="//search/separator" position="after">
+					<filter string="Customer Regular"
+							name="partner_regular"
+							domain="[('customer_type','=','regular')]"/>
+					
+					<filter string="STRIFund"
+							name="partner_fund"
+							domain="[('customer_type','=','fund')]"/>
+            	</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

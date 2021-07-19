@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+
+		<!-- model.name inherit form view -->
+		<!--record id="product_category_inherit1" model="ir.ui.view">
+			<field name="name">product.category.inherit1</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='categ_id']" position="attributes">
+					<attribute name="domain">[('user_ids', '=', uid)]</attribute>
+				</xpath>
+			</field>
+		</record-->
+
+
+		<!-- Este es la acción para ir al modulo de metodo de usuarios -->
+		<record id="action_user_departments" model="ir.actions.act_window">
+			<field name="name">Users</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">res.users</field>
+			<field name="view_mode">tree,kanban,form</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="hs_product_category.user_department_tree"/>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					<!-- Add Text Here -->
+				</p><p>
+					<!-- More details about what a user can do with this object will be OK --> 
+				</p>
+			</field>
+		</record>
+
+
+		<!-- Este es la acción para ir al modulo de metodo de pagos -->
+		<record id="action_journal_product_category" model="ir.actions.act_window">
+			<field name="name">Journals</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.journal</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_type">form</field>
+			<field name="context">{}</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					<!-- Add Text Here -->
+				</p><p>
+					<!-- More details about what a user can do with this object will be OK --> 
+				</p>
+			</field>
+		</record>
+	
+	
+		<!-- Con este vista se agrega los campos de metodo de pagos y usuarios dentro del 
+		formulario de categoria de productos -->
+		<record id="product_category_filter_inherit1" model="ir.ui.view">
+			<field name="name">product.category.filter.inherit1</field>
+			<field name="model">product.category</field>
+			<field name="sequence">17</field>
+			<field name="inherit_id" ref="product.product_category_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//sheet/div[@name='button_box']" position="inside">
+					<button class="oe_stat_button" icon="fa-users" type="action"
+							name="%(hs_product_category.action_account_salesperson)d"
+							context='{"search_departments_users_id":active_id}'>
+						<div class="o_field_widget o_stat_info">
+							<span class="o_stat_value">
+								<field name="user_count"/>
+							</span>
+							<span class="o_stat_text"> Users</span>
+						</div>
+					</button>
+					<button class="oe_stat_button" type="action" icon="fa-credit-card" 
+							name="%(action_journal_product_category)d"
+							context='{"search_journal_id":active_id}'>
+						<div class="o_field_widget o_stat_info">
+							<span class="o_stat_value">
+								<field name="account_journal_count"/>
+							</span>
+							<span class="o_stat_text"> Payments</span>
+						</div>
+					</button>
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</odoo>

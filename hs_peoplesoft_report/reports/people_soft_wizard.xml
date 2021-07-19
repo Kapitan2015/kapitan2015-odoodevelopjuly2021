@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		
+		<record model="ir.ui.view" id="account_people_soft_wizard">
+			<field name="name">account.people.soft.wizard</field>
+			<field name="model">account.people.soft.wizard</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Final People Soft Wizard">
+					<group>
+						<field name="message" readonly="1"/>
+					</group>
+					<footer>
+						<button name="open_people_soft" string="Generar reporte" type="object" class="oe_highlight"/>
+						<button string="Cancel" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+
+		<!-- accion para llamar al wizard de impresion-->
+		<act_window id="account_people_soft_wizard_action"
+			name="People Soft Report"
+			src_model="account.invoice"
+			res_model="account.people.soft.wizard"
+			view_type="form" 
+			view_mode="form"
+			target="new"
+			key2="client_print_multi"
+			/>
+
+	</data>
+</odoo>

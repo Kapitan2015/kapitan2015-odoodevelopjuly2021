@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+		<!-- Add custom js for pos_bag_charges -->	    
+        <template id="assets_for_pos_bag_charges" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/bi_pos_advance_note/static/src/js/pos_order_note.js"/>
+            </xpath>
+        </template>
+        
+        
+        	<record id="view_pos_order_note_tree" model="ir.ui.view">
+            <field name="name">view.pos.order.note.tree</field>
+            <field name="model">pos.order.note</field>
+            <field name="arch" type="xml">
+               <tree string="POS Order Note">													
+						<field name="sequence"/>				
+						<field name="order_note"/>	
+				</tree>
+				</field>
+        </record>
+
+        <record id="seq_order_note" model="ir.sequence">
+            <field name="name">order note sequence</field>
+            <field name="code">pos.order.note</field>
+            <field name="padding">4</field>
+        </record>
+        
+        <record id="view_pos_order_note_form" model="ir.ui.view">
+            <field name="name">view.pos.order.note.form</field>
+            <field name="model">pos.order.note</field>
+            <field name="arch" type="xml">
+                <form string="POS Order Note">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="order_note"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="inherit_view_pos_orderline_adv_note" model="ir.ui.view">
+			<field name="name">inherit_pos_orderline_adv_note_tree</field>
+			<field name="model">pos.order</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='lines']//tree/field[@name='discount']" position="after">
+					<field name="notes_line" />  
+				</xpath>
+				<xpath expr="//field[@name='lines']//form/group/field[@name='discount']" position="after">
+					<field name="notes_line" />  
+				</xpath>
+			</field>
+		</record>
+        
+        <record model="ir.actions.act_window" id="action_pos_order_note">
+            <field name="name">POS Order Note</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.order.note</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <menuitem parent="point_of_sale.menu_point_config_product" action="action_pos_order_note" id="menu_pos_order_note" sequence="30"/>
+
+			
+        
+    </data>
+</odoo>

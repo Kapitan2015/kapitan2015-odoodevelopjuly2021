@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_account_invoice_customer_form" model="ir.ui.view">
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="login" invisible="1"/>
+                <!--field name="pricelist_id"/-->
+                <field name="pricelist_id" force_save="1" attrs="{'readonly': [('login', '=', False)]}"/>
+            </field>
+            <!-- Campo invisible para uso de activacion de botones -->
+            <!-- <xpath expr="//button[@name='preview_invoice']" position="before">
+					<field name="bool_field" invisible="1"/>
+				</xpath> -->
+            <!--Aqui se esta modificando el boton validar para hacerlo invisible mientras este TRUE el boton Update Price-->
+            <!-- <button name="action_invoice_open" type="object" states="draft" string="Validate" attrs="{'invisible':['|',('bool_field', '=', False), ('state', 'not in', ('draft'))]}" class="oe_highlight o_invoice_validate" groups="account.group_account_invoice"/> -->
+            <!-- <xpath expr="//button[@name='action_invoice_open']" position="replace">       
+                <button type="object"
+                        name="action_invoice_open"
+                        string="Validate"
+                        attrs="{'invisible':['|',('bool_field', '=', False), ('state', 'not in', ('draft'))]}"
+                        class="oe_highlight o_invoice_validate"
+                />
+
+            </xpath> -->
+            
+        </field>
+    </record>
+
+    <record id="view_account_invoice_search" model="ir.ui.view">
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_by_partner_id']" position="after">
+                <filter string="Pricelist"
+                        name="pricelist"
+                        context="{'group_by':'pricelist_id'}"
+                        invisible="context.get('type', '') not in ['out_invoice', 'out_refund']"/>
+            </xpath>
+
+            <!-- FILTROS PARA LAS FACTURAS -->
+            <xpath expr="//search[1]/group[1]/separator[1]" position="after">
+                <filter string="BCI"
+                        name="invoice_bci"
+                        domain="[('journal_id.name','=','BCI 1312')]"/>
+                
+                <filter string="Administration"
+                        name="invoice_stri"
+                        domain="[('journal_id.name','=','Administration 1380')]"/>
+                
+                <filter string="STRIFund"
+                        name="invoice_fund"
+                        domain="[('class_code','!=',False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

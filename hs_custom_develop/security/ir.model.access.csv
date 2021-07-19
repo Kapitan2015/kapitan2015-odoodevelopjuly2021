@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+purchase.access_product_product_purchase_user,product.product.purchase.user,product.model_product_product,purchase.group_purchase_user,1,0,0,0
+access_product_product_purchase_advanced_user,product.product.purchase.advanced.user,product.model_product_product,group_purchase_advanced_users,1,1,1,0
+access_res_partner_account_invoice,res.partner.account.invoice,base.model_res_partner,account.group_account_invoice,1,0,0,0
+access_res_partner_account_user,res.partner.account.user,base.model_res_partner,account.group_account_user,1,0,0,0
+crm.access_res_partner,res.partner.crm.user,base.model_res_partner,sales_team.group_sale_salesman,1,0,0,0

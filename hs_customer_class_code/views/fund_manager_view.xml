@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fund_menu_action" model="ir.actions.act_window">
+            <field name="name">Fund Manager</field>
+            <field name="res_model">fund.manager</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create a Fund Manager </p>
+            </field>
+        </record>
+
+        <!--tree view-->
+        <record id = "fund_tree_view" model = "ir.ui.view">
+            <field name = "name"> Fund Manager Tree</field>
+            <field name = "model">fund.manager</field>
+            <field name = "arch" type = "xml">
+                <tree string = "Fund Manager">
+                    <field name = "name" />
+                    <field name = "email" />
+                </tree>
+            </field>
+        </record>
+
+        <!--FORM VIEW-->
+
+        <record id = "fun_manager_view" model = "ir.ui.view">
+            <field name = "name">Fund Manager Form</field>
+            <field name = "model">fund.manager</field>
+            <field name = "arch" type = "xml">
+                <form string = "Fund Manager">
+                    <sheet>
+                    <!-- <field name = "photo" widget = "image" class = "oe_left oe_avatar" /> -->                   
+                        <group>
+                            <group>
+                             <field name = "name" />
+                            </group>
+                            <group>
+                                <field name = "email" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+        <record id="fund_manager_action" model="ir.actions.act_window">
+            <field name="name">Fund Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fund.manager</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+           
+        </record> 
+       
+        <!-- <menuitem id="class_code_menu"
+            name="Class Code" /> -->
+
+        <menuitem id="fund_manager_menu" parent="account.account_management_menu" name="Fund Manager" action="fund_manager_action"/>
+       
+    </data>
+        
+</odoo>

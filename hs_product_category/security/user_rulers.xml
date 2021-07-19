@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+		
+		<!-- Regla de acceso para visualizar las productos en base a la categoria -->
+		<!--record id="product_user_access_category1" model="ir.rule">
+			<field name="name">STRI product user access by category</field>
+			<field name="model_id" ref="account.model_product_product"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('account.group_account_invoice'))]"/>
+			<field name="domain_force">
+				[('categ_id', 'in', [categ.id for categ in user.departments_ids])]
+			</field>
+			<field name="perm_create" eval="0"/>
+			<field name="perm_write" eval="0"/>
+			<field name="perm_unlink" eval="0"/>
+			<field name="perm_read" eval="1"/>
+		</record-->
+
+		<!-- Regla de acceso para visualizar los productos en base al usuario actual-->
+		<record id="product_access_user" model="ir.rule">
+			<field name="name">STRI products access by current user</field>
+			<field name="model_id" ref="account.model_product_product"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('account.group_account_invoice'))]"/>
+			<field name="domain_force">
+				[('salesperson_ids', '=', user.id)]
+			</field>
+			<field name="perm_create" eval="0"/>
+			<field name="perm_write" eval="0"/>
+			<field name="perm_unlink" eval="0"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+
+
+		<!-- Regla de acceso para visualizar los pagos en base a la categoria de producto-->
+		<record id="payment_user_access_category1" model="ir.rule">
+			<field name="name">STRI payment user access by category1</field>
+			<field name="model_id" ref="account.model_account_journal"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('account.group_account_invoice'))]"/>
+			<field name="domain_force">
+				['|', '&amp;', ('type', '=', 'sale'), ('type', '=', ['cash', 'bank']), ('department_ids', '=', [ categ.id for categ in user.departments_ids])]
+			</field>
+			<field name="perm_create" eval="0"/>
+			<field name="perm_write" eval="0"/>
+			<field name="perm_unlink" eval="0"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+
+		<!-- Regla de acceso para visualizar los pagos en base a la categoria de producto. 
+		Esta regla es necesaria porque al momento de crear una factura, el sistema necesita 
+		algun journal de tipo sales para poder completar la factura-->
+		<!--record id="payment_user_access_category2" model="ir.rule">
+			<field name="name">STRI payment user access by category2</field>
+			<field name="model_id" ref="account.model_account_journal"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('account.group_account_invoice'))]"/>
+			<field name="domain_force">
+				[('type', '=', 'sale')]
+			</field>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+			<field name="perm_read" eval="1"/>
+		</record-->
+
+
+		<!-- Regla de acceso total a producto para los administradores-->
+		<record id="total_access_products" model="ir.rule">
+			<field name="name">STRI total access to product</field>
+			<field name="model_id" ref="account.model_product_product"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('account.group_account_manager'))]"/>
+			<field name="domain_force">
+				[(1, '=', 1)]
+			</field>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+
+		<!-- Regla de acceso total a categoria de productos para los administradores-->
+		<record id="total_access_product_category" model="ir.rule">
+			<field name="name">STRI total access to product</field>
+			<field name="model_id" ref="account.model_product_category"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('account.group_account_manager'))]"/>
+			<field name="domain_force">
+				[(1, '=', 1)]
+			</field>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+
+		<!-- Regla de acceso total a los journals para los administradores-->
+		<record id="total_access_journal" model="ir.rule">
+			<field name="name">STRI total access to journals</field>
+			<field name="model_id" ref="account.model_account_journal"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('account.group_account_manager'))]"/>
+			<field name="domain_force">
+				[(1, '=', 1)]
+			</field>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+
+
+		<!-- Regla de acceso para visualizar los product.template en base al usuario actual-->
+		<record id="product_template_access_user" model="ir.rule">
+			<field name="name">STRI products template access by current user</field>
+			<field name="model_id" ref="account.model_product_template"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
+			<field name="domain_force">
+				[('salesperson_ids', '=', user.id)]
+			</field>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_unlink" eval="0"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+
+
+		<!-- Regla de acceso total a producto para los administradores-->
+		<record id="total_access_product_template" model="ir.rule">
+			<field name="name">STRI total access to products template</field>
+			<field name="model_id" ref="account.model_product_template"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
+			<field name="domain_force">
+				[(1, '=', 1)]
+			</field>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+
+		
+
+
+		<!-- Regla de acceso para visualizar categorias de productos en base al usuario actual-->
+		<!--record id="category_product_categ_stok_access" model="ir.rule">
+			<field name="name">STRI category user access by current user</field>
+			<field name="model_id" ref="account.model_product_category"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('hs_product_category.group_stock_advanced_users'))]"/>
+			<field name="domain_force">
+				[('user_ids', '=', user.id)]
+			</field>
+			<field name="perm_create" eval="0"/>
+			<field name="perm_write" eval="0"/>
+			<field name="perm_unlink" eval="0"/>
+			<field name="perm_read" eval="1"/>
+		</record-->
+
+
+		<!-- Regla de acceso para visualizar categorias de productos en base al usuario actual-->
+		<record id="category_product_categ_admin" model="ir.rule">
+			<field name="name">STRI total access to product category</field>
+			<field name="model_id" ref="account.model_product_category"/>
+			<field name="global" eval="False"/>
+			<field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
+			<field name="domain_force">
+				[(1, '=', 1)]
+			</field>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+			<field name="perm_read" eval="1"/>
+		</record>
+	</data>
+</odoo>

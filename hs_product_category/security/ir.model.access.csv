@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_template_stock_advanced_users,product.template.stock.advanced.users,product.model_product_template,hs_product_category.group_stock_advanced_users,1,1,1,1
+access_product_product_stock_advanced_users,product.product.stock.advanced.users,product.model_product_product,hs_product_category.group_stock_advanced_users,1,1,1,1
+access_product_category_stock_advanced_users,product.category.stock.advanced.users,product.model_product_category,hs_product_category.group_stock_advanced_users,1,1,1,1

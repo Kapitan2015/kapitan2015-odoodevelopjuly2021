@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_class_code_manager,access.class.code.manager,model_class_code,account.group_account_manager,1,1,1,1
+access_class_code_accountant,access.class.code.accountant,model_class_code,account.group_account_user,1,1,1,1
+access_class_code_user,access.class.code.user,model_class_code,account.group_account_advance_user,1,1,1,0
+access_fund_manager,access.fund.manager,model_fund_manager,account.group_account_manager,1,1,1,1
+access_fund_manager_accountant,access.fund.manager.accountant,model_fund_manager,account.group_account_user,1,1,1,1
+access_principal_investigator_manager,access.principal.investigator.manager,model_principal_investigator,account.group_account_manager,1,1,1,1
+access_principal_investigator_accountant,access.principal.investigator.accountant,model_principal_investigator,account.group_account_user,1,1,1,1
+
+access_regular_companies,access.regular.companies,model_regular_companies,account.group_account_manager,1,1,1,1
+access_regular_companies_accountant,access.regular.companies.accountant,model_regular_companies,account.group_account_user,1,1,1,1
+
+
+
+

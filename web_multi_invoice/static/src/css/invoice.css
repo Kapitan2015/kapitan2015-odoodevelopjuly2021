@@ -1,0 +1,16 @@
+.row.invoice_data.modal-body.Invoice {
+    margin: 0px;
+}
+.row.invoice_web {
+    padding: 14px;
+    border: 1px solid rgba(0, 0, 0, 6.125);
+    border-radius: 12px;
+}
+.row.col-md-12.invoice_reference_web{
+    padding: 9px;
+    color: black;
+}
+.row.col-md-12.invoice_amount_web{
+    padding: 9px;
+    color: black;
+}

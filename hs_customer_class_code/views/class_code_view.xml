@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="code_menu_action" model="ir.actions.act_window">
+            <field name="name">Class Codes</field>
+            <field name="res_model">class.code</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create a Class Code </p>
+            </field>
+        </record>
+
+        <!--tree view-->
+        <record id = "code_tree_view" model = "ir.ui.view">
+            <field name = "name"> Class Code Tree</field>
+            <field name = "model">class.code</field>
+            <field name = "arch" type = "xml">
+                <tree string = "Class Codes">
+                    <field name = "code" />
+                    <field name = "name" />
+                </tree>
+            </field>
+        </record>
+
+        <!--FORM VIEW-->
+
+        <record id = "class_code_view" model = "ir.ui.view">
+            <field name = "name">Class Code Form</field>
+            <field name = "model">class.code</field>
+            <field name = "arch" type = "xml">
+                <form string = "Class Codes">
+                    <sheet>
+                    <!-- <field name = "photo" widget = "image" class = "oe_left oe_avatar" /> -->                   
+                        <group>
+                            <group>
+                             <field name = "code"/> <!-- context="{'class_search': True}"--> 
+                            </group>
+                            <group>
+                                <field name = "name" />
+                                
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+        <record id="class_code_menu" model="ir.actions.act_window">
+            <field name="name">Class Codes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">class.code</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+            <!-- <field name="view_type">tree,form</field> -->
+            <!-- <field name="view_mode">tree</field> -->
+        </record>
+       
+        <!-- <menuitem id="class_code_menu"
+            name="Class Code" /> -->
+
+        <menuitem id="class_code_customer_menu" parent="account.account_management_menu" name="Class Codes" action="class_code_menu"/>
+        
+    </data>
+        
+</odoo>
