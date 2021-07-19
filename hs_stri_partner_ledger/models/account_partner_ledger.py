@@ -93,7 +93,11 @@ class PartnerLedgerInherit(models.AbstractModel):
 				columns.pop(1)
 				columns.pop(2)
 				item['columns'] = columns
-			_logger.info(item)
+			elif not item.get('level') and item.get('offset'):
+				_logger.info(item)
+				# [fixed 00] El reporte tiene tiene 9 columnas, quitamos 
+				# dos columna, colspans=7
+				item['colspan'] = 7
 
 
 		"""
