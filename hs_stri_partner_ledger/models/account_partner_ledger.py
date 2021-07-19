@@ -93,7 +93,7 @@ class PartnerLedgerInherit(models.AbstractModel):
 				columns.pop(1)
 				columns.pop(2)
 				item['columns'] = columns
-
+			print(item)
 
 
 		"""
