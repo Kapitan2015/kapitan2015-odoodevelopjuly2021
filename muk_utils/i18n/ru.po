@@ -208,4 +208,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:muk_utils.view_mixins_groups_form
 msgid "Users"
 msgstr "Пользователи"
-

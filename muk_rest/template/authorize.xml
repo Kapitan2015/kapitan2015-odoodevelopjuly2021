@@ -125,6 +125,7 @@
     			<p class="alert alert-danger" t-if="error" role="alert">
                     <t t-esc="error"/>
                 </p>
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
  				<input type="hidden" name="oauth_token" t-att-value="oauth_token" required="required" readonly="readonly"/>
  				<input type="hidden" name="callback" t-att-value="callback" readonly="readonly"/>
 		        <input type="hidden" name="db" t-att-value="request.db" required="required" readonly="readonly"/>
@@ -182,6 +183,7 @@
     			<p class="alert alert-danger" t-if="error" role="alert">
                     <t t-esc="error"/>
                 </p>
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
  				<input type="hidden" name="client_id" t-att-value="client_id" required="required" readonly="readonly"/>
  				<input type="hidden" name="redirect_uri" t-att-value="redirect_uri" required="required" readonly="readonly"/>
  				<input type="hidden" name="response_type" t-att-value="response_type" required="required" readonly="readonly"/>

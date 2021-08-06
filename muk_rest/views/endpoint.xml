@@ -157,6 +157,8 @@
 	                                    <li><code>logger.info(message)</code>: Python logging framework</li>
 	                                    <li><code>Warning</code>: Warning Exception to use with <code>raise</code></li>
 	                                    <li>To return a result, assign <code>result = {...}</code></li>
+	                                    <li>To return a payload, assign <code>payload = ...</code></li>
+	                                    <li>To set custom headers, assign <code>headers = [...]</code></li>
 	                                </ul>
 	                            </div>
 	                        </group>

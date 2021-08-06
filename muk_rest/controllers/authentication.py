@@ -50,10 +50,12 @@ from werkzeug import exceptions, utils
 from odoo import _, http
 from odoo.http import request, Response
 from odoo.exceptions import AccessDenied
+from odoo.tools import misc, config
 
 from odoo.addons.muk_rest import validators, tools
 
 _logger = logging.getLogger(__name__)
+_csrf = config.get('rest_csrf', False)
 
 class AuthenticationController(http.Controller):
     
@@ -114,7 +116,7 @@ class AuthenticationController(http.Controller):
     # OAuth 1.0
     #----------------------------------------------------------
 
-    @http.route('/api/authentication/oauth1/initiate', auth="none", type='http', methods=['POST'], csrf=False)
+    @http.route('/api/authentication/oauth1/initiate', auth="none", type='http', methods=['POST'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -127,7 +129,7 @@ class AuthenticationController(http.Controller):
             headers=request.httprequest.headers)
         return Response(response=body, headers=headers, status=status) 
     
-    @http.route('/api/authentication/oauth1/authorize', auth="none", type='http', methods=['GET', 'POST'], csrf=False)
+    @http.route('/api/authentication/oauth1/authorize', auth="none", type='http', methods=['GET', 'POST'], csrf=_csrf)
     @tools.common.ensure_database
     @tools.common.ensure_module()
     @tools.common.ensure_import()
@@ -174,7 +176,7 @@ class AuthenticationController(http.Controller):
             return utils.redirect('/api/authentication/error', 302)
 
     
-    @http.route('/api/authentication/oauth1/token', auth="none", type='http', methods=['POST'], csrf=False)
+    @http.route('/api/authentication/oauth1/token', auth="none", type='http', methods=['POST'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -191,7 +193,7 @@ class AuthenticationController(http.Controller):
     # OAuth 2.0
     #----------------------------------------------------------
 
-    @http.route('/api/authentication/oauth2/authorize', auth="none", type='http', methods=['GET', 'POST'], csrf=False)
+    @http.route('/api/authentication/oauth2/authorize', auth="none", type='http', methods=['GET', 'POST'], csrf=_csrf)
     @tools.common.ensure_database
     @tools.common.ensure_module()
     @tools.common.ensure_import()
@@ -251,7 +253,7 @@ class AuthenticationController(http.Controller):
             headers=request.httprequest.headers)
         return Response(response=body, headers=headers, status=status) 
     
-    @http.route('/api/authentication/oauth2/revoke', auth="none", type='http', methods=['POST'], csrf=False)
+    @http.route('/api/authentication/oauth2/revoke', auth="none", type='http', methods=['POST'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -265,6 +267,6 @@ class AuthenticationController(http.Controller):
         request.session.logout()
         return Response(response=body, headers=headers, status=status) 
         
-    @http.route('/api/authentication/error', auth="none", type='http', methods=['GET'], csrf=False)
+    @http.route('/api/authentication/error', auth="none", type='http', methods=['GET'])
     def oauth_error(self, **kw):
         return request.render('muk_rest.authorize_error')

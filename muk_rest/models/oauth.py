@@ -117,7 +117,6 @@ class OAuth(models.Model):
     # Functions
     #----------------------------------------------------------
     
-    @api.multi
     def action_settings(self):
         oauth_configuration_id = next(iter(self.ids or []), None)
         oauth1 = self.env['muk_rest.oauth1'].sudo().search([('oauth', '=', oauth_configuration_id)], limit=1)
@@ -141,7 +140,6 @@ class OAuth(models.Model):
             })
         return action
     
-    @api.multi
     def action_sessions(self):
         oauth_configuration_id = next(iter(self.ids or []), None)
         oauth1 = self.env['muk_rest.oauth1'].sudo().search([('oauth', '=', oauth_configuration_id)], limit=1)
@@ -169,7 +167,6 @@ class OAuth(models.Model):
     # Read
     #----------------------------------------------------------
     
-    @api.multi
     def _compute_sessions(self):
         for record in self:
             domain_oauth1 = [('oauth.oauth', '=', record.id)]

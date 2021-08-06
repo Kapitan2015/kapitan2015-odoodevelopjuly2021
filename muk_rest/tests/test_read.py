@@ -108,7 +108,7 @@ class ReadTestCase(RestfulCase):
     def test_read_context(self):
         client = self.authenticate()
         ids = [1, 2, 3]
-        fields = ['name', 'image']
+        fields = ['name', 'image_1024']
         tester = self.json_prepare(self.env['res.partner'].with_context(bin_size=True).browse(ids).read(fields=fields))
         ids = json.dumps(ids)
         fields = json.dumps(fields)

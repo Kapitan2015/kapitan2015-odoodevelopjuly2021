@@ -1,3 +1,19 @@
+.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
+   :target: https://www.gnu.org/licenses/lgpl
+   :alt: License: LGPL-3
+   
+.. image:: https://gitlab.mukit.at/base/muk_autovacuum/badges/12.0/pipeline.svg
+   :target: https://gitlab.mukit.at/base/muk_autovacuum/commits/12.0
+   :alt: Pipeline status
+   
+.. image:: https://gitlab.mukit.at/base/muk_autovacuum/badges/12.0/coverage.svg
+   :target: https://gitlab.mukit.at/base/muk_autovacuum/commits/12.0
+   :alt: Coverage report
+
+.. image:: https://weblate.mukit.at/widgets/base-12/-/muk_autovacuum/svg-badge.svg
+   :target: https://weblate.mukit.at/projects/base-12/muk_autovacuum/
+   :alt: Translation status 
+
 ==============
 MuK Autovacuum
 ==============

@@ -81,6 +81,7 @@ CALLBACK_URL = 'https://127.0.0.1/callback'
 
 VERSION_URL = '/api'
 DATABASE_URL = '/api/database'
+CSRF_URL = '/api/csrf_token'
 
 OAUTH1_REQUEST_TOKEN_URL = '/api/authentication/oauth1/initiate'
 OAUTH1_AUTHORIZATION_URL = '/api/authentication/oauth1/authorize'
@@ -131,6 +132,7 @@ class RestfulCase(common.HttpCase):
         self.callback_url = CALLBACK_URL
         self.version_url = self.url_prepare(VERSION_URL)
         self.database_url = self.url_prepare(DATABASE_URL)
+        self.csrf_token_url = self.url_prepare(CSRF_URL)
         self.oauth1_request_token_url = self.url_prepare(OAUTH1_REQUEST_TOKEN_URL)
         self.oauth1_authorization_url = self.url_prepare(OAUTH1_AUTHORIZATION_URL)
         self.oauth1_access_token_url = self.url_prepare(OAUTH1_ACCESS_TOKEN_URL)

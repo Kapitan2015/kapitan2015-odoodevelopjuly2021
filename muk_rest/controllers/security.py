@@ -68,7 +68,7 @@ class SecurityController(http.Controller):
         '/api/access/rights',
         '/api/access/rights/<string:model>',
         '/api/access/rights/<string:model>/<string:operation>',
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -85,7 +85,7 @@ class SecurityController(http.Controller):
         '/api/access/rules',
         '/api/access/rules/<string:model>',
         '/api/access/rules/<string:model>/<string:operation>',
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -103,7 +103,7 @@ class SecurityController(http.Controller):
         '/api/access/fields',
         '/api/access/fields/<string:model>',
         '/api/access/fields/<string:model>/<string:operation>',
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -121,7 +121,7 @@ class SecurityController(http.Controller):
         '/api/access',
         '/api/access/<string:model>',
         '/api/access/<string:model>/<string:operation>',
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()

@@ -126,13 +126,14 @@ class OAuth2(models.Model):
         for record in self:
             if len(record.callbacks) >= 1:
                 record.default_callback = record.callbacks[0]
+            else:
+                record.default_callback = False
         
         
     #----------------------------------------------------------
     # Create / Update / Delete
     #----------------------------------------------------------
 
-    @api.multi
     def unlink(self):
         self.mapped('oauth').unlink()
         return super(OAuth2, self).unlink()

@@ -50,13 +50,14 @@ from werkzeug import exceptions
 
 from odoo import _, http, release
 from odoo.http import request, Response
-from odoo.tools import misc
+from odoo.tools import misc, config
 
 from odoo.addons.muk_rest import validators, tools
 from odoo.addons.muk_rest.tools.common import parse_value
 from odoo.addons.muk_utils.tools.json import ResponseEncoder, RecordEncoder
 
 _logger = logging.getLogger(__name__)
+_csrf = config.get('rest_csrf', False)
 
 class ModelController(http.Controller):
 
@@ -67,7 +68,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/field_names',
         '/api/field_names/<string:model>',
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -80,7 +81,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/fields',
         '/api/fields/<string:model>',
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -95,7 +96,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/metadata',
         '/api/metadata/<string:model>',
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -119,7 +120,7 @@ class ModelController(http.Controller):
         '/api/search/<string:model>/<string:order>',
         '/api/search/<string:model>/<int:limit>/<string:order>',
         '/api/search/<string:model>/<int:limit>/<int:offset>/<string:order>'
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -142,7 +143,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/name',
         '/api/name/<string:model>',
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -159,7 +160,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/read',
         '/api/read/<string:model>',
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -180,7 +181,7 @@ class ModelController(http.Controller):
         '/api/search_read/<string:model>/<string:order>',
         '/api/search_read/<string:model>/<int:limit>/<string:order>',
         '/api/search_read/<string:model>/<int:limit>/<int:offset>/<string:order>'
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -203,7 +204,7 @@ class ModelController(http.Controller):
         '/api/read_group/<string:model>/<string:orderby>',
         '/api/read_group/<string:model>/<int:limit>/<string:orderby>',
         '/api/read_group/<string:model>/<int:limit>/<int:offset>/<string:orderby>'
-    ], auth="none", type='http', methods=['GET'],  csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -229,7 +230,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/create',
         '/api/create/<string:model>',
-    ], auth="none", type='http', methods=['POST'], csrf=False)
+    ], auth="none", type='http', methods=['POST'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -246,7 +247,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/write',
         '/api/write/<string:model>',
-    ], auth="none", type='http', methods=['PUT'], csrf=False)
+    ], auth="none", type='http', methods=['PUT'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -264,7 +265,7 @@ class ModelController(http.Controller):
     @http.route([
         '/api/unlink',
         '/api/unlink/<string:model>',
-    ], auth="none", type='http', methods=['DELETE'], csrf=False)
+    ], auth="none", type='http', methods=['DELETE'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()

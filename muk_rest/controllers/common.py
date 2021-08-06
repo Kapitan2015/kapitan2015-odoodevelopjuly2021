@@ -52,13 +52,14 @@ from odoo import _, http, release
 from odoo.http import request, Response
 from odoo.models import check_method_name
 from odoo.tools.image import image_data_uri
-from odoo.tools import misc
+from odoo.tools import misc, config
 
 from odoo.addons.muk_rest import validators, tools
 from odoo.addons.muk_rest.tools.common import parse_value
 from odoo.addons.muk_utils.tools.json import ResponseEncoder, RecordEncoder
 
 _logger = logging.getLogger(__name__)
+_csrf = config.get('rest_csrf', False)
 
 VERSION = {
     'server_version': release.version,
@@ -73,12 +74,12 @@ class RestfulController(http.Controller):
     # Utility
     #----------------------------------------------------------
     
-    @http.route('/api/<path:path>', auth="none", type='http', csrf=False)
+    @http.route('/api/<path:path>', auth="none", type='http', csrf=_csrf)
     @tools.common.parse_exception
     def catch(self, **kw):    
         return exceptions.NotFound()
     
-    @http.route('/api/custom/<path:path>', auth="none", type='http', csrf=False)
+    @http.route('/api/custom/<path:path>', auth="none", type='http', csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -88,22 +89,20 @@ class RestfulController(http.Controller):
         if endpoint and endpoint.exists():
             ctx = request.session.context.copy()
             ctx.update(context and parse_value(context) or {})
-            result = endpoint.with_context(ctx).evaluate(request.params)
-            content = json.dumps(result, sort_keys=True, indent=4, cls=RecordEncoder)
-            return Response(content, content_type='application/json;charset=utf-8', status=200)
+            return endpoint.with_context(ctx).evaluate(request.params)
         return exceptions.NotFound()
     
     #----------------------------------------------------------
     # Base
     #----------------------------------------------------------
 
-    @http.route('/api', auth="none", type='http', methods=['GET'], csrf=False)
+    @http.route('/api', auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     def version(self, **kw): 
         version = json.dumps(VERSION, sort_keys=True, indent=4)
         return Response(version, content_type='application/json;charset=utf-8', status=200)
 
-    @http.route('/api/database', auth="none", type='http', methods=['GET'], csrf=False)
+    @http.route('/api/database', auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     def database(self, **kw): 
@@ -111,11 +110,19 @@ class RestfulController(http.Controller):
         content = json.dumps(result, sort_keys=True, indent=4, cls=ResponseEncoder)
         return Response(content, content_type='application/json;charset=utf-8', status=200)
     
+    @http.route('/api/csrf_token', auth="none", type='http', methods=['GET'])
+    @tools.common.parse_exception
+    @tools.common.ensure_database
+    def csrf_token(self, time_limit=None, **kw): 
+        result = {'csrf_token': request.csrf_token(time_limit)}
+        content = json.dumps(result, sort_keys=True, indent=4, cls=ResponseEncoder)
+        return Response(content, content_type='application/json;charset=utf-8', status=200)
+        
     #----------------------------------------------------------
     # Session
     #----------------------------------------------------------
     
-    @http.route('/api/user', auth="none", type='http', methods=['GET'], csrf=False)
+    @http.route('/api/user', auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -125,7 +132,7 @@ class RestfulController(http.Controller):
         content = json.dumps(result, sort_keys=True, indent=4, cls=ResponseEncoder)
         return Response(content, content_type='application/json;charset=utf-8', status=200) 
     
-    @http.route('/api/userinfo', auth="none", type='http', methods=['GET'], csrf=False)
+    @http.route('/api/userinfo', auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -151,12 +158,12 @@ class RestfulController(http.Controller):
                 'country': user.partner_id.country_id.display_name,
             },
             'updated_at': user.partner_id.write_date,
-            'picture': image_data_uri(user.partner_id.image_medium),
+            'picture': image_data_uri(user.partner_id.image_1024),
         }
         content = json.dumps(result, sort_keys=True, indent=4, cls=ResponseEncoder)
         return Response(content, content_type='application/json;charset=utf-8', status=200) 
      
-    @http.route('/api/session', auth="none", type='http', methods=['GET'], csrf=False)
+    @http.route('/api/session', auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -193,7 +200,7 @@ class RestfulController(http.Controller):
         '/api/call',
         '/api/call/<string:model>',
         '/api/call/<string:model>/<string:method>',
-    ], auth="none", type='http', methods=['POST'], csrf=False)
+    ], auth="none", type='http', methods=['POST'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -213,7 +220,7 @@ class RestfulController(http.Controller):
     @http.route([
         '/api/xmlid',
         '/api/xmlid/<string:xmlid>',
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -239,19 +246,18 @@ class RestfulController(http.Controller):
         '/api/binary/<int:id>-<string:unique>/<path:extra>/<string:filename>',
         '/api/binary/<string:model>/<int:id>/<string:field>',
         '/api/binary/<string:model>/<int:id>/<string:field>/<string:filename>'
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
     @tools.security.protected()
     def binary(self, xmlid=None, model='ir.attachment', id=None, field='datas', unique=None,
         filename=None, filename_field='datas_fname', mimetype=None, access_token=None,
-        related_id=None, access_mode=None, file_response=False, **kw):
+        file_response=False, **kw):
         status, headers, content = request.env['ir.http'].binary_content(xmlid=xmlid,
-            model=model, id=id, field=field, unique=unique, filename=filename,
-            filename_field=filename_field, mimetype=mimetype, related_id=related_id,
-            access_mode=access_mode, access_token=access_token, download=True,
-            default_mimetype='application/octet-stream')
+            model=model, id=id, field=field, unique=unique, filename=filename, 
+            filename_field=filename_field, mimetype=mimetype, access_token=access_token, 
+            download=True, default_mimetype='application/octet-stream')
         if status != 200:
             exceptions.abort(status)
         if file_response and misc.str2bool(file_response):
@@ -278,7 +284,7 @@ class RestfulController(http.Controller):
             response = Response(content, content_type='application/json;charset=utf-8', status=200) 
         return response
     
-    @http.route('/api/upload', auth="none", type='http', methods=['POST'], csrf=False)
+    @http.route('/api/upload', auth="none", type='http', methods=['POST'], csrf=_csrf)
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -295,7 +301,6 @@ class RestfulController(http.Controller):
             for ufile in files:
                 attachment = request.env['ir.attachment'].create({
                     'datas': base64.encodestring(ufile.read()),
-                    'datas_fname': ufile.filename,
                     'name': ufile.filename,
                     'res_model': model,
                     'res_id': int(id),
@@ -312,7 +317,7 @@ class RestfulController(http.Controller):
         '/api/reports',
         '/api/reports/<string:name>',
         '/api/reports/<string:name>/<string:model>',
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()
@@ -331,7 +336,7 @@ class RestfulController(http.Controller):
         '/api/report',
         '/api/report/<string:report>',
         '/api/report/<string:report>/<string:type>',
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     @tools.common.ensure_database
     @tools.common.ensure_module()

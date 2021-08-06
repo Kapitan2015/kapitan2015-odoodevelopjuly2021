@@ -247,7 +247,6 @@
 	<record id="action_rest_oauth_on_create" model="ir.actions.act_window">
 		<field name="name">Create a new OAuth2 Setting</field>
 		<field name="res_model">muk_rest.oauth2</field>
-		<field name="view_type">form</field>
 		<field name="view_mode">form</field>
 		<field name="target">new</field>
 	</record>

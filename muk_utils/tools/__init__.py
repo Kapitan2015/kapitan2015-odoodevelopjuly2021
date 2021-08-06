@@ -2,7 +2,7 @@
 #
 #    Copyright (c) 2017-2019 MuK IT GmbH.
 #
-#    This file is part of MuK Utils 
+#    This file is part of MuK Utils
 #    (see https://mukit.at).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,11 +20,4 @@
 #
 ###################################################################################
 
-from . import rst
-from . import file
-from . import json
-from . import cache
-from . import types
-from . import http
-from . import patch
-from . import security
+from . import file, http, json, patch, security

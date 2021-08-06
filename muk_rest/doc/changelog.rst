@@ -1,3 +1,15 @@
+`3.7.0`
+-------
+
+- Added CSRF Token Check
+
+`3.6.0`
+-------
+
+- Added Custom Endpoint Payload
+- Added Custom Endpoint Headers
+
+
 `3.5.0`
 -------
 

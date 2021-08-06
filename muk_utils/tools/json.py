@@ -2,7 +2,7 @@
 #
 #    Copyright (c) 2017-2019 MuK IT GmbH.
 #
-#    This file is part of MuK Utils 
+#    This file is part of MuK Utils
 #    (see https://mukit.at).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,33 +20,26 @@
 #
 ###################################################################################
 
-import json
-import logging
 import datetime
+import json
 
-from odoo import models, tools
+from odoo import fields, models
+from odoo.tools import ustr
 
-_logger = logging.getLogger(__name__)
-
-#----------------------------------------------------------
-# JSON Encoder
-#----------------------------------------------------------
 
 class ResponseEncoder(json.JSONEncoder):
-    
     def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return obj.strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT)
         if isinstance(obj, datetime.date):
-            return obj.strftime(tools.DEFAULT_SERVER_DATE_FORMAT)
+            if isinstance(obj, datetime.datetime):
+                return fields.Datetime.to_string(obj)
+            return fields.Date.to_string(obj)
         if isinstance(obj, (bytes, bytearray)):
             return obj.decode()
-        return json.JSONEncoder.default(self, obj)
+        return ustr(obj)
+
 
 class RecordEncoder(ResponseEncoder):
-    
     def default(self, obj):
         if isinstance(obj, models.BaseModel):
             return obj.name_get()
         return ResponseEncoder.default(self, obj)
-        

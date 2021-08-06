@@ -68,6 +68,9 @@ class CommonTestCase(RestfulCase):
     def test_database(self):
         self.assertTrue(self.url_open(self.database_url))
     
+    def test_csrf_token(self):
+        self.assertTrue(self.url_open(self.csrf_token_url))
+    
     @unittest.skipIf(not active_authentication, "Skipped because no authentication is available!")
     def test_user(self):
         client = self.authenticate()

@@ -2,7 +2,7 @@
 #
 #    Copyright (c) 2017-2019 MuK IT GmbH.
 #
-#    This file is part of MuK Utils 
+#    This file is part of MuK Utils
 #    (see https://mukit.at).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,63 +20,37 @@
 #
 ###################################################################################
 
-from odoo import api, fields, models
+from odoo import fields, models
+
 
 class ResConfigSettings(models.TransientModel):
 
-    _inherit = 'res.config.settings'
+    _inherit = "res.config.settings"
 
-    #----------------------------------------------------------
+    # ----------------------------------------------------------
     # Selections
-    #----------------------------------------------------------
-    
+    # ----------------------------------------------------------
+
     def _attachment_location_selection(self):
-        locations = self.env['ir.attachment'].storage_locations()
+        locations = self.env["ir.attachment"].storage_locations()
         return list(map(lambda location: (location, location.upper()), locations))
 
-    #----------------------------------------------------------
+    # ----------------------------------------------------------
     # Database
-    #----------------------------------------------------------
-    
+    # ----------------------------------------------------------
+
     attachment_location = fields.Selection(
         selection=lambda self: self._attachment_location_selection(),
-        string='Storage Location',
+        config_parameter="ir_attachment.location",
+        string="Storage Location",
+        help="Attachment storage location.",
         required=True,
-        default='file',
-        help="Attachment storage location.")
-    
-    attachment_location_changed = fields.Boolean(
-        compute='_compute_attachment_location_changed',
-        string='Storage Location Changed')
-    
-    #----------------------------------------------------------
-    # Functions
-    #----------------------------------------------------------
-    
-    @api.multi 
-    def set_values(self):
-        res = super(ResConfigSettings, self).set_values()
-        param = self.env['ir.config_parameter'].sudo()
-        param.set_param('ir_attachment.location', self.attachment_location)
-        return res
+        default="file",
+    )
 
-    @api.model
-    def get_values(self):
-        res = super(ResConfigSettings, self).get_values()
-        params = self.env['ir.config_parameter'].sudo()
-        res.update(attachment_location=params.get_param('ir_attachment.location', 'file'))
-        return res
-    
-    def attachment_force_storage(self):
-        self.env['ir.attachment'].force_storage()
-        
-    #----------------------------------------------------------
-    # Read
-    #----------------------------------------------------------
-    
-    @api.depends('attachment_location')
-    def _compute_attachment_location_changed(self):
-        params = self.env['ir.config_parameter'].sudo()
-        location = params.get_param('ir_attachment.location', 'file')
-        for record in self:
-            record.attachment_location_changed = location != self.attachment_location
+    # ----------------------------------------------------------
+    # Actions
+    # ----------------------------------------------------------
+
+    def action_attachment_force_storage(self):
+        self.env["ir.attachment"].force_storage()

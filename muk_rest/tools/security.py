@@ -146,7 +146,9 @@ def protected(operations=['read'], check_custom_routes=False, *args, **kwargs):
             if not (user and env):
                 raise Unauthorized()
             if check_custom_routes:
-                domain = [('route', '=', http.request.httprequest.path)]
+                path = http.request.httprequest.path
+                endpoint = path[len("/api/custom/"):] if path.startswith("/api/custom/") else path
+                domain = ['|', ('route', '=', path), ('endpoint', '=', endpoint)]
                 route = env['muk_rest.endpoint'].search(domain, limit=1).exists()
                 if route and route.perm_read and 'read' not in operations:
                     operations.append('read')

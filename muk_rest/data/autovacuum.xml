@@ -61,8 +61,8 @@
         <field name="time_field" ref="muk_rest.field_muk_rest_bearer_token__expires_in"/>
         <field name="active" eval="True" />
         <field name="state">time</field>
-        <field name="time_type">days</field>
-        <field name="time">7</field>
+        <field name="time_type">hours</field>
+        <field name="time">1</field>
         <field name="protect_starred" eval="False" />
     </record>
 </odoo>

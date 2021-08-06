@@ -1,3 +1,19 @@
+.. image:: https://img.shields.io/badge/license-MKPL--1-blue.png
+   :target: https://www.mukit.at/legal/licenses/mkpl
+   :alt: License: MKPL-1
+   
+.. image:: https://gitlab.mukit.at/interface/muk_rest/badges/12.0/pipeline.svg
+   :target: https://gitlab.mukit.at/interface/muk_rest/commits/12.0
+   :alt: Pipeline status
+   
+.. image:: https://gitlab.mukit.at/interface/muk_rest/badges/12.0/coverage.svg
+   :target: https://gitlab.mukit.at/interface/muk_rest/commits/12.0
+   :alt: Coverage report
+
+.. image:: https://weblate.mukit.at/widgets/interface-12/-/muk_rest/svg-badge.svg
+   :target: https://weblate.mukit.at/projects/interface-12/muk_rest/
+   :alt: Translation status
+
 ===========
 Restful API
 ===========

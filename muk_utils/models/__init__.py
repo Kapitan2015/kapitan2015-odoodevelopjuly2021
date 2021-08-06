@@ -2,7 +2,7 @@
 #
 #    Copyright (c) 2017-2019 MuK IT GmbH.
 #
-#    This file is part of MuK Utils 
+#    This file is part of MuK Utils
 #    (see https://mukit.at).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,11 +20,11 @@
 #
 ###################################################################################
 
-from . import base
-from . import mixins_groups
-from . import mixins_hierarchy
-from . import scss_editor
-from . import ir_attachment
-from . import ir_config_parameter
-from . import res_config_settings
-
+from . import (
+    base,
+    ir_attachment,
+    ir_config_parameter,
+    mixins_groups,
+    mixins_hierarchy,
+    res_config_settings,
+)

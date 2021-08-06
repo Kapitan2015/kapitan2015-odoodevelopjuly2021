@@ -2,7 +2,7 @@
 #
 #    Copyright (c) 2017-2019 MuK IT GmbH.
 #
-#    This file is part of MuK Utils 
+#    This file is part of MuK Utils
 #    (see https://mukit.at).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,13 @@
 #
 ###################################################################################
 
-from odoo import models, api
+from odoo import api, models
+
 
 class IrConfigParameter(models.Model):
-    
-    _inherit = 'ir.config_parameter'
-    
+
+    _inherit = "ir.config_parameter"
+
     @api.model
     def set_params(self, params):
         for key, value in params.items():

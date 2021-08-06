@@ -100,7 +100,6 @@ class OAuth1(models.Model):
     # Create / Update / Delete
     #----------------------------------------------------------
 
-    @api.multi
     def unlink(self):
         self.mapped('oauth').unlink()
         return super(OAuth1, self).unlink()

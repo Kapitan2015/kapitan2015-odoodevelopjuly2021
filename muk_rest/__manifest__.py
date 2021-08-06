@@ -43,7 +43,7 @@
 {
     'name': 'MuK REST API for Odoo',
     'summary': 'A customizable Restful API for Odoo',
-    'version': '12.0.3.5.5',
+    'version': '13.0.3.7.0',
     'category': 'Extra Tools',
     "license": "Other proprietary",
     'price': 95.00,

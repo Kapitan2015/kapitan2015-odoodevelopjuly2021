@@ -80,7 +80,7 @@ class DatabaseController(http.Controller):
     # Database
     #----------------------------------------------------------
     
-    @http.route('/api/database/list', auth="none", type='http', methods=['GET'], csrf=False)
+    @http.route('/api/database/list', auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     def database_list(self, **kw):
         databases = http.db_list()
@@ -92,7 +92,7 @@ class DatabaseController(http.Controller):
     @http.route([
         '/api/database/size',
         '/api/database/size/<string:database_name>',
-    ], auth="none", type='http', methods=['GET'], csrf=False)
+    ], auth="none", type='http', methods=['GET'])
     @tools.common.parse_exception
     def database_size(self, database_name, **kw):
         databases = http.db_list()

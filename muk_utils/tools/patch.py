@@ -2,7 +2,7 @@
 #
 #    Copyright (c) 2017-2019 MuK IT GmbH.
 #
-#    This file is part of MuK Utils 
+#    This file is part of MuK Utils
 #    (see https://mukit.at).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,15 +20,6 @@
 #
 ###################################################################################
 
-import logging
-
-from odoo import api
-
-_logger = logging.getLogger(__name__)
-
-#----------------------------------------------------------
-# Patch Helper
-#----------------------------------------------------------
 
 def monkey_patch(cls):
     def decorate(func):
@@ -36,4 +27,5 @@ def monkey_patch(cls):
         func.super = getattr(cls, name, None)
         setattr(cls, name, func)
         return func
+
     return decorate

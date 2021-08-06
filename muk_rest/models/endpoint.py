@@ -51,12 +51,14 @@ import textwrap
 from pytz import timezone
 
 from odoo import _, models, api, fields
+from odoo.http import request, Response
 from odoo.exceptions import ValidationError, Warning
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools.safe_eval import safe_eval, test_python_expr
 
 from odoo.addons.muk_rest.tools.common import parse_value
+from odoo.addons.muk_utils.tools.json import ResponseEncoder, RecordEncoder
 
 _logger = logging.getLogger(__name__)
 
@@ -258,31 +260,43 @@ class Endpoint(models.Model):
         })
         return context
 
-    @api.multi
     def evaluate(self, params):
-        output = []
-        for record in self:
-            eval = {'endpoint': self.route}
-            if record.state == 'domain':
-                model = self.env[record.model.sudo().model]
-                fields = record.domain_fields.mapped('name') or None
-                domain = safe_eval(record.domain or "[]", self._get_eval_domain_context(record, params))
-                eval.update({'result': model.search_read(domain, fields=fields)})
-            elif record.state == 'action':
-                result = record.action.with_context(**self._get_eval_action_context(record, params)).run()
-                eval.update({'result': result})
-            elif record.state == 'code':
-                context = self._get_eval_code_context(record, params)
-                safe_eval(record.code.strip(), context, mode="exec", nocopy=True)    
-                result = context['result'] if 'result' in context else None 
-                eval.update({'result': result})  
-            else:
-                eval.update({'result': None})
-            output.append(eval)
-        if output and len(output) == 1:
-            return output[0]
-        return output
-    
+        self.ensure_one()
+        if self.state == 'domain':
+            model = self.env[self.model.sudo().model]
+            fields = self.domain_fields.mapped('name') or None
+            domain = safe_eval(self.domain or "[]", self._get_eval_domain_context(self, params))
+            result = {
+                'endpoint': self.route,
+                'model': model._name,
+                'domain': domain,
+                'fields': self.domain_fields.mapped('name'),
+                'result': model.search_read(domain, fields=fields),
+            }
+            content = json.dumps(result, sort_keys=True, indent=4, cls=RecordEncoder)
+            return Response(content, content_type='application/json;charset=utf-8', status=200)
+        elif self.state == 'action':
+            result = {
+                'endpoint': self.route,
+                'action': self.action.name,
+                'result': self.action.with_context(**self._get_eval_action_context(self, params)).run(),
+            }
+            content = json.dumps(result, sort_keys=True, indent=4, cls=RecordEncoder)
+            return Response(content, content_type='application/json;charset=utf-8', status=200)
+        elif self.state == 'code':
+            content = _("No result was found for this endpoint!")
+            context = self._get_eval_code_context(self, params)
+            safe_eval(self.code.strip(), context, mode="exec", nocopy=True)   
+            if 'result' in context and context.get('result'):
+                result = {'endpoint': self.route, 'result': context['result']}
+                content = json.dumps(result, sort_keys=True, indent=4, cls=RecordEncoder)
+            elif 'payload' in context and context.get('payload'):
+                content = context['payload']
+            if 'headers' in context and context.get('headers'):
+                return Response(content, headers=context['headers'], status=200)
+            return Response(content, content_type='application/json;charset=utf-8', status=200)
+        return Response(_("Invalid endpoint!"), content_type='application/json;charset=utf-8', status=200)
+
     #----------------------------------------------------------
     # View
     #----------------------------------------------------------
@@ -309,7 +323,7 @@ class Endpoint(models.Model):
     @api.depends('endpoint')
     def _compute_route(self):
         for record in self:
-            record.route = record.endpoint and "/api/custom/%s" % record.endpoint.strip("/")
+            record.route = "/api/custom/%s" % record.endpoint
             
     #----------------------------------------------------------
     # Create, Update, Delete
