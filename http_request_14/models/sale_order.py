@@ -28,14 +28,15 @@ class SaleOrder(models.Model):
 		
 		# logging.info("VALOR DE VALS: " + str(vals))
 		config_model = self.env['ir.config_parameter'].sudo()
-		data = str(vals).replace("False", "false").replace("True", "true")
 		# url = "https://prod-42.westus.logic.azure.com:443/workflows/87751d86593c449495cb5ebff6f1a876/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=d86mun_4KtfZeGD_nHeAfUe4CRokZIQUmfdYeL_ohBI"
-		url = config_model.get_param('post.request.url')
-
-		res = requests.post(url, data=data)
 
 		result = super(SaleOrder, self).create(vals)
 		logging.info("VALOR DE RES: " + str(result))
+		vals2 = dict(vals)
+		vals2["id"] = result
+		data = str(vals2).replace("False", "false").replace("True", "true")
+		url = config_model.get_param('post.request.url')
+		res = requests.post(url, data=data)
 		return result
 		# super(SaleOrder, self).create(vals)
 		
