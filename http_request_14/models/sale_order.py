@@ -33,9 +33,9 @@ class SaleOrder(models.Model):
 		url = config_model.get_param('post.request.url')
 
 		res = requests.post(url, data=data)
-		logging.info("VALOR DE RES: " + str(res))
 
 		result = super(SaleOrder, self).create(vals)
+		logging.info("VALOR DE RES: " + str(result))
 		return result
 		# super(SaleOrder, self).create(vals)
 		
